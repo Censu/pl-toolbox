@@ -1,0 +1,177 @@
+/* 
+    Document   : MainCSS
+    Created on : Mar 7, 2013, 9:21:37 AM
+    Author     : Owner
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+
+
+.root{
+
+    -fx-mygradient: linear-gradient(
+        to bottom,
+        ladder(red, 
+               derive(red,80%) 60%, 
+               red 82%) 0%,
+        ladder(grey, 
+               derive(grey,20%) 10%, 
+               derive(grey,-10%) 80%) 100%
+    );
+}
+
+
+.import-file-accordion-nofile > .title {
+    /*-fx-box-border, -fx-inner-border, -fx-body-color;*/
+    -fx-background-color: grey;/*-fx-mygradient;*/
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em;
+}
+
+.import-file-accordion-validfile > .title {
+    -fx-background-color: lightgreen;/*-fx-mygradient;*/
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em;
+}
+
+.import-file-accordion-invalidfile > .title{
+    -fx-background-color: red;/*-fx-mygradient;*/
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em;
+}
+
+.fileLoadStatus-nofile{
+    -fx-background-color: linear-gradient(#A8A8A8, #787878);
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
+
+.fileLoadStatus-nofile:hover{
+    -fx-background-color: linear-gradient(#787878, #A8A8A8);
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;    
+}
+
+.fileLoadStatus-invalidfile{
+    -fx-background-color: linear-gradient(#ff5400, #be1d00);
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
+
+.fileLoadStatus-invalidfile:hover{
+    -fx-background-color: linear-gradient(#be1d00, #ff5400);
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
+
+.fileLoadStatus-validfile{
+    -fx-background-color: linear-gradient(#35C700, #227D01);
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
+
+.fileLoadStatus-validfile:hover{
+    -fx-background-color: linear-gradient(#227D01, #35C700);
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
+
+.helpNotice{
+    -fx-border-radius: 1;
+    -fx-border-color: #00529B;
+    -fx-background-color: #BDE5F8;
+}
+
+
+
+
+
+
+/*Light Border - Dark Contents Scheme*/
+
+.modulePane1{
+    -fx-border-radius: 1;
+    -fx-border-color: #00529B;
+    -fx-background-color: #BDE5F8;
+}
+
+.modulePane2{
+    -fx-border-radius: 1;
+    -fx-border-color: #2F8209;
+    -fx-background-color: #73E63E;
+}
+
+.modulePane3{
+    -fx-border-radius: 1;
+    -fx-border-color: #C2B836;
+    -fx-background-color: #E8E072;
+}
+
+.moduleDisabled{
+    -fx-border-radius: 1;
+    -fx-border-color: #78787A;
+    -fx-background-color: #C1C1C7;
+}
+
+.modulePane1Child{
+    -fx-border-radius: 1;
+    -fx-background-color: #7187EB;
+}
+
+.modulePane2Child{
+    -fx-border-radius: 1;
+    -fx-background-color: #4CC414;
+}
+
+.modulePane3Child{
+    -fx-border-radius: 1;
+    -fx-background-color: #C2B836;
+}
+
+#StatusBox{
+    -fx-border-radius: 1;
+    -fx-border-color: #00529B;
+    -fx-background-color: #BDE5F8;
+}
+
+#ToolTipBox{
+    -fx-border-radius: 2;
+    -fx-border-color: #999015;/*#BAAE0B;*/
+    -fx-background-color: #FAEC2D;
+}
+
+.ttip{
+    -fx-background-radius: 0 0 0 0;
+}
+
+.page-corner{
+    -fx-shape: " ";
+}
+
+.
+
+
+/*.titled-pane > .title{
+    -fx-background-color: green;
+}
+
+
+.titled-pane > .title {
+    -fx-background-color: -fx-box-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em;
+}*/
+
+
