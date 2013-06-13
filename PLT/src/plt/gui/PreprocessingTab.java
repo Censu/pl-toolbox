@@ -490,7 +490,6 @@ public class PreprocessingTab extends Tab {
 
             @Override
             public void changed(ObservableValue<? extends FeatureListTableRowData> ov, FeatureListTableRowData t, FeatureListTableRowData t1) {
-                System.out.println("Here");
                 features.refreshTable(experiment, t1.rowID.get());
             }
             
