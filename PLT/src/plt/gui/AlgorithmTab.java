@@ -21,10 +21,12 @@ import javafx.stage.Stage;
 import plt.gui.component.AdvanceTextField;
 import plt.gui.configurators.PLBackPropagationConfigurator;
 import plt.gui.configurators.PLNeuroEvolutionConfigurator;
+import plt.gui.configurators.PLRankSvmConfigurator;
 import plt.gui.customcomponents.ModulePane;
 import plt.plalgorithm.PLAlgorithm;
 import plt.plalgorithm.backpropagation.PLBackPropagation;
 import plt.plalgorithm.neruoevolution.PLNeuroEvolution;
+import plt.plalgorithm.svm.libsvm_plt.PLRankSvm;
 
 
 /**
@@ -61,7 +63,7 @@ public class AlgorithmTab extends Tab {
         nestedBp.setPrefHeight(400);
         nestedBp.setPrefWidth(650);
         
-        final ModulePane algorithmMPane = new ModulePane("Algorithm", new ArrayList<String>(Arrays.asList("Evolving NN","Back propagation")), new Pane(), "modulePane1",850);
+        final ModulePane algorithmMPane = new ModulePane("Algorithm", new ArrayList<String>(Arrays.asList("Evolving NN","Back propagation","Rank SVM")), new Pane(), "modulePane1",850);
         final ModulePane validatorMPane = new ModulePane("Cross Validation", new ArrayList<String>(Arrays.asList("None", "K-Fold")),new Pane(),"modulePane2",850);
         
         
@@ -195,7 +197,22 @@ public class AlgorithmTab extends Tab {
                         self.experiment.algorithmProperty().set(algo2);                        
                     break;
                         
-                    
+                    case 2:
+                        PLRankSvmConfigurator conf3 = new PLRankSvmConfigurator();
+                        self.algorithmPanes = conf3.ui();
+
+                        algorithmMPane_contentBox = new HBox(5);
+                        for(int counter=0; counter<self.algorithmPanes.length; counter++)
+                        {
+                            Node tmpContentNode = algorithmPanes[counter].getContent();
+                            algorithmMPane_contentBox.getChildren().add(tmpContentNode);
+                        } 
+
+                        algorithmMPane.setMainContent(algorithmMPane_contentBox);
+
+                        PLRankSvm algo3 = new PLRankSvm(null,conf3);
+                        self.experiment.algorithmProperty().set(algo3);
+                    break;
                 }
             }
         });

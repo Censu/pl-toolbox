@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import plt.featureselection.examples.NBest;
 import plt.gui.component.ModalPopup;
+import plt.gui.configurators.PLRankSvmConfigurator;
 import plt.plalgorithm.neruoevolution.PLNeuroEvolutionConfigurator;
 import plt.gui.help.Tab1Help;
 import plt.gui.help.Tab2Help;
@@ -30,6 +31,7 @@ import plt.gui.help.Tab3Help;
 import plt.gui.help.Tab4Help;
 import plt.plalgorithm.neruoevolution.GA.GeneticAlgorithmConfigurator;
 import plt.plalgorithm.neruoevolution.PLNeuroEvolution;
+import plt.plalgorithm.svm.libsvm_plt.PLRankSvm;
 
 /**
  *
@@ -210,6 +212,21 @@ public class MasterGUI extends BorderPane
                                 allClear = false;
                             }
                         }
+                        
+                        if(experiment.algorithmProperty().get() instanceof PLRankSvm)
+                        {
+                            PLRankSvm castPLRS = (PLRankSvm) experiment.algorithmProperty().get();
+                            PLRankSvmConfigurator svmConfig = castPLRS.getConfigurator();
+
+                            if((svmConfig.gammaRequired())
+                            &&(svmConfig.getGamma() == 0))
+                            {
+                                ModalPopup notification = new ModalPopup();
+                                notification.show(new Label("SVM ERROR: Gamma cannot be set to 0."), parentStage.getScene().getRoot(),null,new Button("OK"), 200,550,false);  
+                                
+                                allClear = false;
+                            }        
+                        }
                     }
                     
                     if(experiment.algorithmProperty().get() instanceof PLNeuroEvolution)
@@ -235,6 +252,21 @@ public class MasterGUI extends BorderPane
 
                             allClear = false;
                         } 
+                    }
+                    
+                    if(experiment.algorithmProperty().get() instanceof PLRankSvm)
+                    {
+                        PLRankSvm castPLRS = (PLRankSvm) experiment.algorithmProperty().get();
+                        PLRankSvmConfigurator svmConfig = castPLRS.getConfigurator();
+                        
+                        if((svmConfig.gammaRequired())
+                        &&(svmConfig.getGamma() == 0))
+                        {
+                            ModalPopup notification = new ModalPopup();
+                            notification.show(new Label("SVM ERROR: Gamma cannot be set to 0."), parentStage.getScene().getRoot(),null,new Button("OK"), 200,550,false);  
+                            
+                            allClear = false;
+                        }        
                     }
                     
 

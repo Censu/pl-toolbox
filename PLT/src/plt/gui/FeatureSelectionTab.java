@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -24,10 +23,12 @@ import plt.gui.configurators.NBestConfigurator;
 import plt.gui.component.AdvanceTextField;
 import plt.gui.configurators.PLBackPropagationConfigurator;
 import plt.gui.configurators.PLNeuroEvolutionConfigurator;
+import plt.gui.configurators.PLRankSvmConfigurator;
 import plt.gui.customcomponents.ModulePane;
 import plt.plalgorithm.PLAlgorithm;
 import plt.plalgorithm.backpropagation.PLBackPropagation;
 import plt.plalgorithm.neruoevolution.PLNeuroEvolution;
+import plt.plalgorithm.svm.libsvm_plt.PLRankSvm;
 
 /**
  *
@@ -70,7 +71,7 @@ public class FeatureSelectionTab extends Tab {
         nestedBp.setPrefWidth(650);
         
         final ModulePane featureSelection = new ModulePane("Feature Selection", new ArrayList<String>(Arrays.asList("None", "nBest", "SFS")),new Pane(),"modulePane3",850);
-        final ModulePane algorithmMPane = new ModulePane("Algorithm", new ArrayList<String>(Arrays.asList("None","Evolving NN","Back propagation")), new Pane(), "modulePane1",850);
+        final ModulePane algorithmMPane = new ModulePane("Algorithm", new ArrayList<String>(Arrays.asList("None","Evolving NN","Back propagation","Rank SVM")), new Pane(), "modulePane1",850);
         final ModulePane validatorMPane = new ModulePane("Cross Validation", new ArrayList<String>(Arrays.asList("None", "K-Fold")),new Pane(),"modulePane2",850);
         
                 
@@ -212,7 +213,7 @@ public class FeatureSelectionTab extends Tab {
                     algorithmMPane.disableMPane();
                     validatorMPane.disableMPane();
                     
-                    algorithmMPane.setChoiceBoxOptions(new ArrayList<String>(Arrays.asList("None","Evolving NN","Back propagation")));
+                    algorithmMPane.setChoiceBoxOptions(new ArrayList<String>(Arrays.asList("None","Evolving NN","Back propagation","Rank SVM")));
                 }
                 else
                 {
@@ -240,14 +241,22 @@ public class FeatureSelectionTab extends Tab {
                 else
                 {
                     if((featureSelection.choiceBox.getSelectionModel().getSelectedIndex() != 0)
-                    &&(algorithmMPane.choiceBox.getItems().size() != 2))
+                    &&(algorithmMPane.choiceBox.getItems().size() != 3))
                     {
-                        algorithmMPane.setChoiceBoxOptions(new ArrayList<String>(Arrays.asList("Evolving NN","Back propagation")));
+                        algorithmMPane.setChoiceBoxOptions(new ArrayList<String>(Arrays.asList("Evolving NN","Back propagation","Rank SVM")));
                     }
                     
                     
                     int i =  algorithmMPane.choiceBox.getSelectionModel().getSelectedIndex();
-
+                    
+                    if(i == -1)
+                    {
+                        String txtChoice = (String) t;
+                        if(txtChoice.equals("Evolving NN")) { i = 0; }
+                        else if(txtChoice.equals("Back propagation")) { i = 1; }
+                        else if(txtChoice.equals("Rank SVM")) { i = 2; }
+                    }
+                    
                     switch (i) {
                         case 0:  
                             PLNeuroEvolutionConfigurator conf = new PLNeuroEvolutionConfigurator();
@@ -289,8 +298,23 @@ public class FeatureSelectionTab extends Tab {
                             PLBackPropagation algo2 = new PLBackPropagation(null, conf2);
                             self.experiment.algorithmForFeatureSelectionProperty().set(algo2);                        
                         break;
+                            
+                        case 2:
+                            PLRankSvmConfigurator conf3 = new PLRankSvmConfigurator();
+                            self.algorithimConfigurations = conf3.ui();
+                            
+                            algorithmMPane_contentBox = new HBox(5);
+                            for(int counter=0; counter<self.algorithimConfigurations.length; counter++)
+                            {
+                                Node tmpContentNode = algorithimConfigurations[counter].getContent();
+                                algorithmMPane_contentBox.getChildren().add(tmpContentNode);
+                            } 
 
-
+                            algorithmMPane.setMainContent(algorithmMPane_contentBox);
+                            
+                            PLRankSvm algo3 = new PLRankSvm(null,conf3);
+                            self.experiment.algorithmForFeatureSelectionProperty().set(algo3);
+                        break;
                     }
                 }
                 
