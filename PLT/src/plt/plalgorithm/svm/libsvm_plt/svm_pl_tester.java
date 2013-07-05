@@ -87,7 +87,7 @@ public class svm_pl_tester
                     {
                         nwFeatures[i-1] = Double.parseDouble(lineComponents[i]);
                     }
-                    PL_Object nwPLObj = new PL_Object(nxtPlObjID, nwFeatures);
+                    PL_Object nwPLObj = new PL_Object(Integer.parseInt(lineComponents[0]), nxtPlObjID, nwFeatures);
                     tmpObjList.add(nwPLObj);
                     nxtPlObjID++;
                 }

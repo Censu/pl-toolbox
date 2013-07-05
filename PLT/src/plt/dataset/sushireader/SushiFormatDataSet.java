@@ -30,6 +30,7 @@ public class SushiFormatDataSet implements DataSet {
     
     private UramakiFileParseStatus localParseStatus;
     private HashMap<Integer, Integer> mapping;
+    private HashMap<Integer, Integer> orderToActualObjID;
     
     private HashMap<Integer, Object> featureToMinValMap;
     private HashMap<Integer, Object> featureToMaxValMap;
@@ -45,6 +46,7 @@ public class SushiFormatDataSet implements DataSet {
         
         this.localParseStatus = new UramakiFileParseStatus();
         this.mapping = new HashMap<>();
+        this.orderToActualObjID = new HashMap<>();
         
         featureToMinValMap = new HashMap<>();
         featureToMaxValMap = new HashMap<>();
@@ -89,6 +91,7 @@ public class SushiFormatDataSet implements DataSet {
             String platIndieLineSep = System.getProperty("line.separator");
             
             HashMap<Integer, String[]> hastable = new HashMap<>();
+            orderToActualObjID.clear();
 
             boolean first = true;
             Integer firstIndentifier = -1;
@@ -169,6 +172,8 @@ public class SushiFormatDataSet implements DataSet {
                             firstIndentifier = indentifier;
                         }
                         hastable.put(indentifier, list);
+                        orderToActualObjID.put(entryNum, indentifier);
+                        
                         /*System.out.println("Line number: "+(srcFileLineNum+1));
 
                         if(indentifier == 2647)
@@ -339,6 +344,9 @@ public class SushiFormatDataSet implements DataSet {
         return localParseStatus;
     }
     
+    public int getObjActualID(int para_objOrderID) {
+        return orderToActualObjID.get(para_objOrderID);
+    }
     
     @Override
     public int getNumberOfObjects() {

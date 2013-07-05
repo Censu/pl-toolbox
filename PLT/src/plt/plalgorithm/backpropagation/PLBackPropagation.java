@@ -19,7 +19,7 @@ import plt.model.Model;
 import plt.plalgorithm.PLAlgorithm;
 import plt.plalgorithm.neruoevolution.NE.SimpleNeuralNetwork;
 import plt.plalgorithm.neruoevolution.PLNeuroEvolution;
-import plt.report.ModelFileData;
+import plt.report.NNModelFileData;
 import plt.utils.Preference;
 
 /**
@@ -108,7 +108,7 @@ public class PLBackPropagation extends PLAlgorithm {
             
             }
 
-            @Override
+            /*@Override
             public void save(File file) throws IOException{
                 try {
                     Date date=new Date() ;  
@@ -122,18 +122,19 @@ public class PLBackPropagation extends PLAlgorithm {
                     throw ex;
                 }
 
-            }
+            }*/
             
-            /*Override
+            @Override
             public void save(File file, Experiment experiment) throws IOException{
                 try {
                  
                     // Construct file data for chosen model.
-                    ModelFileData objToStore = new ModelFileData("Backpropagation",
-                                                                 network,
-                                                                 this.getDataSet(),
-                                                                 this.selectedFeature(),
-                                                                 experiment);        
+                    NNModelFileData objToStore = new NNModelFileData(file.getName(),
+                                                                     "Backpropagation",
+                                                                     network,
+                                                                     this.getDataSet(),
+                                                                     this.selectedFeature(),
+                                                                     experiment);        
                     
                     // Store data to file as JSON.
                     JsonObjIO jsonRW = new JsonObjIO();
@@ -144,7 +145,7 @@ public class PLBackPropagation extends PLAlgorithm {
                    
                    throw ex;
                 }
-            }*/
+            }
             
         };
         

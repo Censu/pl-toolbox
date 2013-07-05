@@ -18,7 +18,12 @@ public abstract class TrainableDataSet {
     
     public TrainableDataSet(DataSet d) {
         this.dataSet = d;
-    }    
+    } 
+    
+    public DataSet getDataSet()
+    {
+        return dataSet;
+    }
     
      /**
      * Given a number n in [0..this.getNumberOfObjects()-1] and a number f in [0..this.getNumberOfFeatures()-1]

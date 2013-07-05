@@ -1,22 +1,21 @@
 package plt.plalgorithm.neruoevolution;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import plt.dataset.TrainableDataSet;
 import plt.featureselection.SelectedFeature;
+import plt.gui.Experiment;
+import plt.json.JsonObjIO;
 import plt.model.Model;
 import plt.plalgorithm.PLAlgorithm;
 import plt.plalgorithm.neruoevolution.GA.GeneticAlgorithmConfigurator;
 import plt.plalgorithm.neruoevolution.GA.genticaloperators.CrossOverType;
 import plt.plalgorithm.neruoevolution.NE.*;
+import plt.report.NNModelFileData;
 import plt.utils.Preference;
 
 
@@ -112,7 +111,7 @@ public class PLNeuroEvolution extends PLAlgorithm {
             
             }
 
-            @Override
+            /*@Override
             public void save(File file) throws IOException{
                 try {
                     Date date=new Date() ;  
@@ -125,20 +124,21 @@ public class PLNeuroEvolution extends PLAlgorithm {
                     
                     throw ex;
                 }
-            }
+            }*/
             
             
             
-            /*@Override
+            @Override
             public void save(File file, Experiment experiment) throws IOException{
                 try {
                  
                     // Construct file data for chosen model.
-                    ModelFileData objToStore = new ModelFileData("NeuroEvolution",
-                                                                 network,
-                                                                 this.getDataSet(),
-                                                                 this.selectedFeature(),
-                                                                 experiment);        
+                    NNModelFileData objToStore = new NNModelFileData(file.getName(),
+                                                                     "NeuroEvolution",
+                                                                     network,
+                                                                     this.getDataSet(),
+                                                                     this.selectedFeature(),
+                                                                     experiment);        
                     
                     // Store data to file as JSON.
                     JsonObjIO jsonRW = new JsonObjIO();
@@ -149,7 +149,7 @@ public class PLNeuroEvolution extends PLAlgorithm {
                    
                    throw ex;
                 }
-            }*/
+            }
         };
         
         return model;        

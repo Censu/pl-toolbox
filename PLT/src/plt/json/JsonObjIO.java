@@ -2,6 +2,7 @@
 package plt.json;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -27,7 +28,7 @@ public class JsonObjIO
         
         try
         {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String jsonResStr = gson.toJson(para_reqObj);
             fWriter.write(jsonResStr);
 

@@ -445,8 +445,8 @@ public class ResultViewer {
                {
                     FileChooser fChooser = new FileChooser();
                     File file = fChooser.showSaveDialog(stage);
-                    m.save(file);
-                    //m.save(file,experiment);
+                    //m.save(file);
+                    m.save(file,experiment);
                     
                     ModalPopup notification = new ModalPopup();
                     notification.show(new Label("SUCCESS: The selected model has been saved."), stage.getScene().getRoot(),null,new Button("OK"), 200,550,false);  

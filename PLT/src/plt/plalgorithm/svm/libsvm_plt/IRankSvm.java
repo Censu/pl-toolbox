@@ -1,6 +1,8 @@
 
 package plt.plalgorithm.svm.libsvm_plt;
 
+import plt.dataset.TrainableDataSet;
+
 /**
  *
  * @author Owner
@@ -8,5 +10,6 @@ package plt.plalgorithm.svm.libsvm_plt;
 public interface IRankSvm
 {
     boolean runRankSVM();
-    double calculateUtility(double[] para_instanceFeatureData);    
+    double calculateUtility(double[] para_instanceFeatureData);
+    SVMDataStore getDataForSVsAndAlphas(TrainableDataSet para_dSet);
 }

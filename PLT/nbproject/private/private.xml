@@ -24,18 +24,18 @@
             </bookmark>
         </file>
         <file>
-            <url>src/uramaki/gui/Main.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>23</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
             <url>file:/Users/luca/Dropbox/dev/uramaki/test/uramaki/dataset/example/SushiPreprocessedDataSetTest.java</url>
             <bookmark id="0">
                 <name/>
                 <line>73</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/uramaki/gui/Main.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>23</line>
                 <key/>
             </bookmark>
         </file>

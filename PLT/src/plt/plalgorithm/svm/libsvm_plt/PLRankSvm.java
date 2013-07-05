@@ -12,9 +12,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import plt.dataset.TrainableDataSet;
 import plt.featureselection.SelectedFeature;
+import plt.gui.Experiment;
 import plt.gui.configurators.PLRankSvmConfigurator;
+import plt.json.JsonObjIO;
 import plt.model.Model;
 import plt.plalgorithm.PLAlgorithm;
+import plt.report.SvmModelFileData;
 
 /**
  *
@@ -105,8 +108,8 @@ public class PLRankSvm extends PLAlgorithm
         return svmConfig;
     }
     
-    private Model createModelForRankSVM(RankSvmManager para_rSVMMang, TrainableDataSet para_dataSet, final SelectedFeature para_selection)
-    {
+    private Model createModelForRankSVM(RankSvmManager para_rSVMMang, final TrainableDataSet para_dataSet, final SelectedFeature para_selection)
+    {        
         Model model = new Model(para_dataSet, para_selection) {
 
             @Override
@@ -115,22 +118,48 @@ public class PLRankSvm extends PLAlgorithm
                 return svmMang.calculateUtility(features);
             }
 
-            @Override
+            /*@Override
             public void save(File file) throws IOException
-            {
-                /*try
+            {    
+                try
                 {
                     Date date=new Date() ;  
                     //BufferedWriter out = new BufferedWriter( new FileWriter (new File(file, "SVM"+date.getTime())));
                     BufferedWriter out = new BufferedWriter(new FileWriter(file));
-                    out.write("SVM#"+ Arrays.toString(network.weights)+ "#" +Arrays.toString(network.topology));
+                    out.write("SVM");
                     out.close();
                 } catch (IOException ex)
                 {
-                    Logger.getLogger(PLRankSvm.class.getName()).log(Level.SEVERE, null, ex);
-                    
+                    Logger.getLogger(PLRankSvm.class.getName()).log(Level.SEVERE, null, ex);   
                     throw ex;
-                }*/
+                }
+            }*/
+            
+            @Override
+            public void save(File file, Experiment experiment) throws IOException
+            {
+                
+                try 
+                {
+                 
+                    SVMDataStore svmDStore = svmMang.getDataForSVsAndAlphas(para_dataSet);
+                    
+                    // Construct file data for chosen model.
+                    SvmModelFileData objToStore = new SvmModelFileData(file.getName(),
+                                                                       svmDStore,
+                                                                       this.getDataSet(),
+                                                                       this.selectedFeature(),
+                                                                       experiment);
+                    
+                    // Store data to file as JSON.
+                    JsonObjIO jsonRW = new JsonObjIO();
+                    jsonRW.writeObjToFile(file.getAbsolutePath(), objToStore);
+                }
+                catch (Exception ex)
+                {
+                   Logger.getLogger(PLRankSvm.class.getName()).log(Level.SEVERE,null,ex);
+                   throw ex;
+                }
             }
             
         };

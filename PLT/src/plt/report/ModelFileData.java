@@ -1,47 +1,84 @@
-
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package plt.report;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import plt.dataset.TrainableDataSet;
 import plt.dataset.preprocessing.MinMax;
 import plt.dataset.preprocessing.PreprocessingOperation;
 import plt.dataset.preprocessing.ZScore;
 import plt.dataset.sushireader.SushiFormatDataSet;
 import plt.featureselection.SelectedFeature;
 import plt.gui.Experiment;
-import plt.plalgorithm.neruoevolution.NE.SimpleNeuralNetwork;
 
-public class ModelFileData implements Serializable
+/**
+ *
+ * @author Owner
+ */
+public abstract class ModelFileData implements Serializable
 {
-    // The selected features that were used as inputs into the neural network.
-    String[] inputs;
-    
-    PreprocessingInfo[] preprocessingInfo;
-    NeuralNetworkInfo neuralNetworkInfo;
     
     
-    // para_algName == Backpropagation or NeuroEvolution.
-    public ModelFileData(String para_algName,
-                         SimpleNeuralNetwork para_network,
-                         TrainableDataSet para_dataSet,
-                         SelectedFeature para_selF,
-                         Experiment para_exp)
+    public Object[] createSFInfo(Experiment para_exp,
+                                 SelectedFeature para_selF)
     {
+        int[] featureIDs = null;
+        String[] featureNames = null;
         
-        // Create object which will be stored to file.
-        
-        
-        // Selected Features (ANN inputs)
-        int[] selF_ids = para_selF.getSelectedFeatures();
-        inputs = new String[selF_ids.length];
-        for(int i=0; i<selF_ids.length; i++)
+        if(para_selF == null)
         {
-            inputs[i] = para_exp.dataSetProperty().get().getFeatureName(selF_ids[i]);
+            // If no feature selection was performed.
+            
+            ArrayList<Integer> tmpFIDList = new ArrayList<>();
+            ArrayList<String> tmpFNameList = new ArrayList<>();
+            
+            boolean[] igArr = para_exp.ignoredFeaturesProperty().get();
+            for(int i=0; i<igArr.length; i++)
+            {
+                if(! igArr[i])
+                {
+                    tmpFIDList.add(i);
+                    tmpFNameList.add(para_exp.dataSetProperty().get().getFeatureName(i));
+                }
+            }
+            
+            featureIDs = new int[tmpFIDList.size()];
+            Integer[] tmpIntArr = tmpFIDList.toArray(new Integer[tmpFIDList.size()]);
+            for(int i=0; i<tmpIntArr.length; i++) { featureIDs[i] = tmpIntArr[i]; }
+            featureNames = tmpFNameList.toArray(new String[tmpFNameList.size()]);
+            
+        }
+        else
+        {
+            
+            int[] selF_ids = para_selF.getSelectedFeatures();
+            featureIDs = selF_ids;
+            featureNames = new String[selF_ids.length];
+            for(int i=0; i<selF_ids.length; i++)
+            {
+                featureNames[i] = para_exp.dataSetProperty().get().getFeatureName(selF_ids[i]);
+            }
+          
         }
         
+        Object[] retData = new Object[2];
+        retData[0] = featureIDs;
+        retData[1] = featureNames;
+        return retData;
+    }
+        
+    public PreprocessingInfo[] createPreproInfo(Experiment para_exp,
+                                                int[] para_selFeatureIds,
+                                                String[] para_selFeatureNames)
+    {
         // Feature Preprocessing Data
-        preprocessingInfo = new PreprocessingInfo[selF_ids.length];
+        
+        int[] selF_ids = para_selFeatureIds;
+        String[] inputs = para_selFeatureNames;
+        
+        PreprocessingInfo[] preprocessingInfo = new PreprocessingInfo[selF_ids.length];
         for(int i=0; i<selF_ids.length; i++)
         {
             PreprocessingOperation preProOp = para_exp.preprocessingOperationsProperty().get()[selF_ids[i]];
@@ -74,145 +111,10 @@ public class ModelFileData implements Serializable
                 nwPreProInfo.addNwEntry("Average",average);
                 nwPreProInfo.addNwEntry("Stdev", stdev);
             }
+            
+            preprocessingInfo[i] = nwPreProInfo;
         }
         
-        // Neural Network Info.
-        NeuralNetworkInfo nnInf = new NeuralNetworkInfo(para_network,para_dataSet,para_selF);
+        return preprocessingInfo;
     }
-    
-    private class PreprocessingInfo
-    {
-        String featureName;
-        String preprocessingTypeName;
-        
-        ArrayList<DataWrapper> otherData;
-        
-        public PreprocessingInfo()
-        {
-            otherData = new ArrayList<DataWrapper>();
-        }
-        
-        public void addNwEntry(String para_AttributeKey, Object para_StoredObj)
-        {
-            DataWrapper nwDWrap = new DataWrapper(para_AttributeKey,para_StoredObj);
-            otherData.add(nwDWrap);
-        }
-        
-        class DataWrapper
-        {
-            String key;
-            Object data;
-            
-            public DataWrapper(String para_Key, Object para_StoredObj)
-            {
-                key = para_Key;
-                data = para_StoredObj;
-            }
-        }
-    }
-    
-    private class NeuralNetworkInfo
-    {
-        NeuralNetLayer[] mlpLayers;
-                
-        
-        public NeuralNetworkInfo(SimpleNeuralNetwork para_neuralNet,
-                                 TrainableDataSet para_dataset,
-                                 SelectedFeature para_selFeatures)
-        {
-            int[] networkTopology = para_neuralNet.topology;
-            double[] networkWeights = para_neuralNet.weights;
-            mlpLayers = new NeuralNetLayer[networkTopology.length];
-            
-            int nxtAvailableNeuronID = 0;
-            
-            int currWeightArrIndex = 0;
-            
-            int[] prevLayerNeuronIDs;
-            
-            for(int i=0; i<networkTopology.length; i++)
-            {
-                NeuralNetLayer nwLayer = new NeuralNetLayer(networkTopology[i]);
-                prevLayerNeuronIDs = new int[networkTopology[i]];                
-                
-                for(int j=0; j<networkTopology[i]; j++)
-                {
-                    int numIncConnections = networkTopology[i-1] + 1;
-                    
-                    double[] neuronWeights = null;
-                    if(i > 0)
-                    {
-                        neuronWeights = new double[numIncConnections];
-                        
-                        for(int wCounter=0; wCounter<neuronWeights.length; wCounter++)
-                        {
-                            neuronWeights[wCounter] = networkWeights[currWeightArrIndex];
-                            currWeightArrIndex++;
-                        }
-                    }
-                        
-                    String[] incConNeurons = new String[numIncConnections];
-                    for(int conCounter=0; conCounter<numIncConnections; conCounter++)
-                    {
-                        String valItem = "ERROR_VAL";
-                        
-                        if(conCounter == (numIncConnections-1))
-                        {
-                            incConNeurons[conCounter] = "Bias";
-                        }
-                        else
-                        {
-                            if(i==0)
-                            {
-                                incConNeurons[conCounter] = ""+para_selFeatures.getSelectedFeatures()[conCounter];
-                            }
-                            else
-                            {                                
-                                incConNeurons[conCounter] = ""+prevLayerNeuronIDs[conCounter];
-                            }
-                        }
-                    }
-                    
-                    
-                    
-                    prevLayerNeuronIDs[j] = nxtAvailableNeuronID;
-                            
-                    NeuronInfo nwNeuronInf = new NeuronInfo(nxtAvailableNeuronID, neuronWeights, incConNeurons);
-                    nxtAvailableNeuronID++;                   
-                    
-                }
-            }
-        }
-               
-        class NeuralNetLayer
-        {
-            NeuronInfo[] layerNeurons;
-            
-            public NeuralNetLayer(int para_numOfNeurons)
-            {
-                layerNeurons = new NeuronInfo[para_numOfNeurons];
-            }
-            
-            public void addNeuronEntry(int para_neuronPosInLayer, NeuronInfo para_nwNeuronEntry)
-            {
-                layerNeurons[para_neuronPosInLayer] = para_nwNeuronEntry;
-            }
-        }
-        
-        class NeuronInfo
-        {
-            int neuronID;
-            double[] weights;
-            String[] incomingConnNeurons;
-            
-            public NeuronInfo(int para_NeuronID, double[] para_Weights, String[] para_IncConNeurons)
-            {
-                neuronID = para_NeuronID;
-                weights = para_Weights;
-                incomingConnNeurons = para_IncConNeurons;
-            }
-        }
-    }   
 }
-
-

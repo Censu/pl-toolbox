@@ -5,8 +5,10 @@
 package plt.plalgorithm.svm.libsvm_plt;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import plt.dataset.TrainableDataSet;
+import plt.dataset.sushireader.SushiFormatDataSet;
 import plt.featureselection.SelectedFeature;
 import plt.plalgorithm.svm.libsvm.svm;
 import plt.plalgorithm.svm.libsvm.svm_model;
@@ -106,6 +108,92 @@ public class RankSvmManager implements IRankSvm
         }
     }
     
+    @Override
+    public SVMDataStore getDataForSVsAndAlphas(TrainableDataSet para_dSet)
+    {
+        
+        double[][] svData_rankPairs = null;
+        double[][] svData_objData = null;
+        double[] alphas = null;
+        int[] objID_actuals = null;
+        
+        
+        ArrayList<double[]> tmpRList = new ArrayList<>();
+        ArrayList<Double> tmpAlphList = new ArrayList<>();
+        ArrayList<Integer> idsOfEncounteredObjs = new ArrayList<>();
+        ArrayList<double[]> tmpObjData = new ArrayList<>();
+        
+        for(int i=0; i<curr_model.SV.length; i++)
+        {
+            double tmpAlpha = curr_model.sv_coef[0][i];
+            
+            if(tmpAlpha != 0)
+            {                
+                svm_node[] svRPair = curr_model.SV[i];
+                
+                int prefObj_internalID = (int) svRPair[0].value;
+                int nonPrefObj_internalID = (int) svRPair[1].value;
+                
+                PL_Object prefObj = curr_dataset.pl_objArr_orig[prefObj_internalID];
+                PL_Object nonPrefObj = curr_dataset.pl_objArr_orig[nonPrefObj_internalID];
+                
+                int prefObj_actualID = prefObj.objID_actual;
+                int nonPrefObj_actualID = nonPrefObj.objID_actual;
+                
+                if(! idsOfEncounteredObjs.contains(prefObj_actualID))
+                {
+                    idsOfEncounteredObjs.add(prefObj_actualID);
+                    tmpObjData.add(para_dSet.getFeatures(prefObj_internalID));
+                }
+                
+                if(! idsOfEncounteredObjs.contains(nonPrefObj_actualID))
+                { 
+                    idsOfEncounteredObjs.add(nonPrefObj_actualID);
+                    tmpObjData.add(para_dSet.getFeatures(i));
+                    
+                    //svm_node[] svRPair_nonPrefObj = curr_dataset.pl_objs[nonPrefObj_internalID];
+                    //tmpObjData.add(convertSvmNodeArrayToDoubleArray(svRPair_nonPrefObj));
+                }
+                
+                tmpAlphList.add(tmpAlpha);
+                tmpRList.add(new double[] { prefObj_actualID, nonPrefObj_actualID });
+            }      
+        }
+        
+        
+        
+        svData_rankPairs = new double[tmpRList.size()][];
+        for(int i=0; i<tmpRList.size(); i++)
+        {
+            svData_rankPairs[i] = tmpRList.get(i);
+        }
+        
+        svData_objData = new double[tmpObjData.size()][];
+        for(int i=0; i<tmpObjData.size(); i++)
+        {
+            svData_objData[i] = tmpObjData.get(i);
+        }
+        
+        alphas = new double[tmpAlphList.size()];
+        for(int i=0; i<tmpAlphList.size(); i++)
+        {
+            alphas[i] = tmpAlphList.get(i);
+        }
+        
+        objID_actuals = new int[idsOfEncounteredObjs.size()];
+        for(int i=0; i<idsOfEncounteredObjs.size(); i++)
+        {
+            objID_actuals[i] = idsOfEncounteredObjs.get(i);
+        }
+        
+        
+        SVMDataStore retStore = new SVMDataStore(svData_rankPairs, svData_objData, alphas, objID_actuals);
+        return retStore;
+        
+    }
+    
+    
+    
     /*public double calculateAccuracy()
     {
         return calculateAccuracy(curr_model,curr_algParams,curr_dataset,curr_dataset);
@@ -120,16 +208,28 @@ public class RankSvmManager implements IRankSvm
     }*/
     
     
+    private double[] convertSvmNodeArrayToDoubleArray(svm_node[] para_svmNodeArr)
+    {
+        double[] convertedArr = new double[para_svmNodeArr.length];
+        for(int i=0; i<para_svmNodeArr.length; i++)
+        {
+            convertedArr[i] = para_svmNodeArr[i].value;
+        }
+        
+        return convertedArr;
+    }
     
     
     private Object[] createPLObjects(TrainableDataSet para_tDataSet, SelectedFeature para_fSelected)
     {
+        SushiFormatDataSet castDSet = (SushiFormatDataSet) para_tDataSet.getDataSet();
+        
         int numObjects = para_tDataSet.getNumberOfObjects();
         
         PL_Object[] plObjArr = new PL_Object[numObjects];
         for(int i=0; i<numObjects; i++)
         {
-            plObjArr[i] = new PL_Object(i, para_fSelected.select(para_tDataSet.getFeatures(i)));
+            plObjArr[i] = new PL_Object(castDSet.getObjActualID(i), i, para_fSelected.select(para_tDataSet.getFeatures(i)));
         }
         
         Object[] retData = new Object[2];
