@@ -53,5 +53,6 @@ public abstract class Model {
     protected abstract double calculatePreference(double[] features);
 
     //abstract public void save(File file) throws IOException;
-    abstract public void save(File file, Experiment experiment) throws IOException;
+    //abstract public void save(File file, Experiment experiment) throws IOException;
+    abstract public void save(File file, Experiment experiment, double accResult_specificModel, double accResult_averageOverFolds) throws IOException;
 }

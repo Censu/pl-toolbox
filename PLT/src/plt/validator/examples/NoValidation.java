@@ -1,6 +1,7 @@
 package plt.validator.examples;
 
 import plt.dataset.TrainableDataSet;
+import plt.gui.ExecutionProgress;
 import plt.model.Model;
 import plt.plalgorithm.PLAlgorithm;
 import plt.report.Report;
@@ -15,6 +16,7 @@ public class NoValidation extends Validator {
 
     @Override
     public Report runWithValidation(PLAlgorithm algorithm) {
+        
         Report report = new Report();
         
         //System.out.println("dataset: " + algorithm.getDataset());

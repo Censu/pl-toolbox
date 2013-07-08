@@ -14,6 +14,7 @@ import plt.gui.Experiment;
 import plt.gui.configurators.PLRankSvmConfigurator;
 import plt.plalgorithm.svm.libsvm_plt.PLRankSvm;
 import plt.plalgorithm.svm.libsvm_plt.SVMDataStore;
+import plt.utils.TimeHelper;
 
 /**
  *
@@ -23,9 +24,8 @@ public class SvmModelFileData extends ModelFileData implements Serializable
 {
     final String algorithm = "Rank SVM";
     
-    String experiment_name;
-    String experiment_timestamp;
-    
+    ExpMetaData experiment_metadata;
+    ExpDatasetData experiment_dataset;
     
     // Feature Config Data.
     String[] selected_features;
@@ -42,15 +42,20 @@ public class SvmModelFileData extends ModelFileData implements Serializable
                             SVMDataStore para_svmDStore,
                             TrainableDataSet para_dataSet,
                             SelectedFeature para_selF,
-                            Experiment para_exp)
+                            Experiment para_exp,
+                            double para_accResult_specificModel,
+                            double para_accResult_averageOverFolds)
     {
         
-        experiment_name = para_fileName;
-        // Timestamp.
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();
-        experiment_timestamp = dateFormat.format(date);
+        experiment_metadata = new ExpMetaData(para_fileName,
+                                              "dd/MM/yyyy   HH:mm:ss",
+                                              para_exp.expStartTimestampProperty().get(),
+                                              para_exp.expCompleteTimestampProperty().get());
         
+        experiment_dataset = new ExpDatasetData(para_exp.idataProperty().get().getAbsolutePath(),
+                                                para_exp.orderProperty().get().getAbsolutePath(),
+                                                para_accResult_specificModel,
+                                                para_accResult_averageOverFolds);
         
         // Preprocessing Info.
         

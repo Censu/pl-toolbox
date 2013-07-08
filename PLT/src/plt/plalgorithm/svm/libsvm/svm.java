@@ -3,6 +3,7 @@ package plt.plalgorithm.svm.libsvm;
 
 import java.io.*;
 import java.util.*;
+import plt.gui.ExecutionProgress;
 
 import plt.plalgorithm.svm.libsvm_plt.svm_problem_pl;
 
@@ -463,12 +464,14 @@ class Solver {
 		// optimization step
 
 		int iter = 0;
-		int max_iter = Math.max(10000000, l>Integer.MAX_VALUE/100 ? Integer.MAX_VALUE : 100*l);
+		int max_iter = 5000;//Math.max(10000000, l>Integer.MAX_VALUE/100 ? Integer.MAX_VALUE : 100*l);
 		int counter = Math.min(l,1000)+1;
 		int[] working_set = new int[2];
 
 		while(iter < max_iter)
 		{
+                        ExecutionProgress.setTaskSubHeader("R_SVM Iteration "+(iter+1));
+                    
 			// show progress and do shrinking
 
 			if(--counter == 0)
@@ -639,7 +642,7 @@ class Solver {
 			}
 
                         
-                        
+                        ExecutionProgress.incrementTaskProgByPerc(1.0f / (max_iter * 1.0f));
 		}
 		
 		if(iter >= max_iter)

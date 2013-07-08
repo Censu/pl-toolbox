@@ -1,7 +1,8 @@
 package plt.gui;
 
 import java.io.File;
-import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.*;
@@ -19,6 +20,7 @@ import plt.dataset.sushireader.UramakiFileParseStatus;
 import plt.featureselection.FeatureSelection;
 import plt.plalgorithm.PLAlgorithm;
 import plt.report.Report;
+import plt.utils.TimeHelper;
 import plt.validator.Validator;
 import plt.validator.examples.KFoldCV;
 import plt.validator.examples.NoValidation;
@@ -80,6 +82,10 @@ public class Experiment {
     private ObjectProperty<PLAlgorithm> algorithmForFeatureSelection;
     private ObjectProperty<FeatureSelection> featureSelection;
     
+    /* meta-data */
+    private ObjectProperty<Calendar> expStartTimestamp;
+    private ObjectProperty<Calendar> expCompleteTimestamp;
+    
     /* property*/
     public BooleanProperty isReadyToParseIdataProperty() { return this.isReadyToParseIdata; }
     public BooleanProperty isReadyToParseOrderProperty() { return this.isReadyToParseOrder; }
@@ -105,6 +111,8 @@ public class Experiment {
     public StringProperty kForFeatureSelectionProperty() {return this.kForFeatureSelection; }
     public ObjectProperty<PLAlgorithm> algorithmForFeatureSelectionProperty() { return this.algorithmForFeatureSelection; }
     public ObjectProperty<FeatureSelection> featureSelectionProperty() { return this.featureSelection; }
+    public ObjectProperty<Calendar> expStartTimestampProperty() { return expStartTimestamp; }
+    public ObjectProperty<Calendar> expCompleteTimestampProperty() { return expCompleteTimestamp; }
 
     public Experiment() {
         
@@ -133,6 +141,9 @@ public class Experiment {
         this.kForFeatureSelection = new SimpleStringProperty();
         this.featureSelection = new SimpleObjectProperty<>();
         this.algorithmForFeatureSelection = new SimpleObjectProperty<>();
+        this.expStartTimestamp = new SimpleObjectProperty<>();
+        this.expCompleteTimestamp = new SimpleObjectProperty<>();
+        
 
         self.dataSet.set(new SushiFormatDataSet());
         
@@ -259,6 +270,12 @@ public class Experiment {
    
    public Report start() {
 
+       // Record Experiment Start Timestamp
+       this.expStartTimestamp.setValue(Calendar.getInstance());
+       Logger.getLogger("plt.logger").log(Level.INFO, "Execution Start: "+ TimeHelper.createTimestampStr(this.expStartTimestamp.get()));
+       
+       ExecutionProgress.reset();
+       ExecutionProgress.signalBeginTask("Setting Dataset",1.0f/10.0f);
         
        boolean[] ignored = this.ignoredFeatures.get();
        PreprocessingOperation[] ops = new PreprocessingOperation[this.preprocessingOperations.get().length];
@@ -275,8 +292,9 @@ public class Experiment {
        
        this.algorithm.get().setDataSet(t);
 
+       ExecutionProgress.incrementTaskProgByPerc(1.0f);
+       ExecutionProgress.signalTaskComplete();
        
-       ExecutionProgress.updateProgress(0.33f);
        
        
        Validator validator = new NoValidation();
@@ -286,7 +304,9 @@ public class Experiment {
         validator = new KFoldCV(d);
        }
        
-
+       String tmpTName = "";
+       if(this.featureSelectionProperty().get() != null) { tmpTName = "Feature Selection"; }
+       ExecutionProgress.signalBeginTask(tmpTName,1.0f/9.0f);
       
        if (this.featureSelectionProperty().get() != null) {
            
@@ -310,12 +330,23 @@ public class Experiment {
            this.algorithm.get().setSelectedFeature(f.getResult());
        }
        
-       ExecutionProgress.updateProgress(0.66f);
+       ExecutionProgress.incrementTaskProgByPerc(1.0f);
+       ExecutionProgress.signalTaskComplete();
        
-       Logger.getLogger("plt.logger").log(Level.INFO, "running experimen - dataset: \n"+t);
-
-       Report retRep = this.algorithm.get().createModelWithValidation(validator);
-       ExecutionProgress.updateProgress(1.0f);
+       
+       
+       ExecutionProgress.signalBeginTask("Experiment",1);
+       Logger.getLogger("plt.logger").log(Level.INFO, "running experiment - dataset: \n"+t);
+       Report retRep = this.algorithm.get().createModelWithValidation(validator);     
+       ExecutionProgress.signalTaskComplete();
+       
+       
+       // Record Experiment Complete Timestamp
+       this.expCompleteTimestamp.setValue(Calendar.getInstance());
+       
+       
+       Logger.getLogger("plt.logger").log(Level.INFO, "Execution End: "+TimeHelper.createTimestampStr(this.expCompleteTimestamp.get()));
+       Logger.getLogger("plt.logger").log(Level.INFO, "Total Duration: "+TimeHelper.calculateDuration(this.expStartTimestamp.get(),this.expCompleteTimestamp.get()));
        
        return retRep;
    }

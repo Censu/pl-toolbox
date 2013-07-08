@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import plt.dataset.TrainableDataSet;
 import plt.featureselection.SelectedFeature;
+import plt.gui.ExecutionProgress;
 import plt.gui.Experiment;
 import plt.json.JsonObjIO;
 import plt.model.Model;
@@ -46,6 +47,8 @@ public class PLBackPropagation extends PLAlgorithm {
         boolean trained = false;
        
         for (int i=0; i< this.configurator.getMaxNumberOfIterations() && !trained; i++) {
+            ExecutionProgress.setTaskSubHeader("MLP Iteration "+(i+1));
+            
             double error = 0;
             
             
@@ -74,7 +77,9 @@ public class PLBackPropagation extends PLAlgorithm {
             trained =  error < this.configurator.getErrorThreeshold();
             
             network.applyDeltas();
-
+            
+            
+            ExecutionProgress.incrementTaskProgByPerc(1.0f / (this.configurator.getMaxNumberOfIterations() * 1.0f));
         }
         
         
@@ -125,7 +130,7 @@ public class PLBackPropagation extends PLAlgorithm {
             }*/
             
             @Override
-            public void save(File file, Experiment experiment) throws IOException{
+            public void save(File file, Experiment experiment, double accResult_specificModel, double accResult_averageOverFolds) throws IOException{
                 try {
                  
                     // Construct file data for chosen model.
@@ -134,7 +139,9 @@ public class PLBackPropagation extends PLAlgorithm {
                                                                      network,
                                                                      this.getDataSet(),
                                                                      this.selectedFeature(),
-                                                                     experiment);        
+                                                                     experiment,
+                                                                     accResult_specificModel,
+                                                                     accResult_averageOverFolds);        
                     
                     // Store data to file as JSON.
                     JsonObjIO jsonRW = new JsonObjIO();

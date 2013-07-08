@@ -6,6 +6,7 @@ package plt.plalgorithm.neruoevolution.GA;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import plt.gui.ExecutionProgress;
 
 /**
  *
@@ -56,7 +57,8 @@ public class GeneticAlgorithm {
         Logger.getLogger("plt.logger").log(Level.INFO, "run GeneticAlgorithm for "+times+" iterations");
 
         for (int i=0; i<times; i++) {
-
+            ExecutionProgress.setTaskSubHeader("GA Generation "+(i+1));
+            
             population.produceNextGeneration(configurator.getParentSelection(), 
                     configurator.getNumberOfParents(), 
                     configurator.getElitSize(), 
@@ -66,7 +68,8 @@ public class GeneticAlgorithm {
             
             //Logger.getLogger("plt.logger").log(Level.INFO, "generation ["+(i+1)+"/"+times+"]");
             //Logger.getLogger("plt.logger").log(Level.INFO, "max fitness:"+population.getMaxFitness());
-
+            
+            ExecutionProgress.incrementTaskProgByPerc(1.0f / (times * 1.0f));
         }
          
         System.out.println("pop:"+population.getMaxFitness());

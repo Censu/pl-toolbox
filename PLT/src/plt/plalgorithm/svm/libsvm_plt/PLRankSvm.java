@@ -136,7 +136,7 @@ public class PLRankSvm extends PLAlgorithm
             }*/
             
             @Override
-            public void save(File file, Experiment experiment) throws IOException
+            public void save(File file, Experiment experiment, double accResult_specificModel, double accResult_averageOverFolds) throws IOException
             {
                 
                 try 
@@ -149,7 +149,9 @@ public class PLRankSvm extends PLAlgorithm
                                                                        svmDStore,
                                                                        this.getDataSet(),
                                                                        this.selectedFeature(),
-                                                                       experiment);
+                                                                       experiment,
+                                                                       accResult_specificModel,
+                                                                       accResult_averageOverFolds);
                     
                     // Store data to file as JSON.
                     JsonObjIO jsonRW = new JsonObjIO();

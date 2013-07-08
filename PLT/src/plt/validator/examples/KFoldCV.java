@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import plt.dataset.DataSet;
 import plt.dataset.TrainableDataSet;
+import plt.gui.ExecutionProgress;
 import plt.model.Model;
 import plt.plalgorithm.PLAlgorithm;
 import plt.report.Report;
@@ -33,7 +34,8 @@ public class KFoldCV extends Validator {
                 
         for (int i=0; i<this.k;i++) {
             Logger.getLogger("plt.logger").log(Level.INFO, "KFoldCV ["+(i+1)+"/"+k+"]");
-
+            ExecutionProgress.signalBeginTask("KFold "+(i+1),(1.0f/(this.k * 1.0f)) * (i+1));
+            
             TrainableDataSet validationDataSet = originalDataSet.subSet(groups.get(i));
             
             Set<Integer> inputSet = new HashSet<>();
@@ -58,7 +60,7 @@ public class KFoldCV extends Validator {
            correctness /= validationDataSet.getNumberOfPreferences();
            
            report.addExperimentResult(model, correctness);
-
+           ExecutionProgress.signalTaskComplete();
         }
 
         return report;

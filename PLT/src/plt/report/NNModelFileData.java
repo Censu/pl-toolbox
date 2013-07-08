@@ -9,13 +9,14 @@ import plt.dataset.TrainableDataSet;
 import plt.featureselection.SelectedFeature;
 import plt.gui.Experiment;
 import plt.plalgorithm.neruoevolution.NE.SimpleNeuralNetwork;
+import plt.utils.TimeHelper;
 
 public class NNModelFileData extends ModelFileData implements Serializable
 {
     String algorithm;
     
-    String experiment_name;
-    String experiment_timestamp;
+    ExpMetaData experiment_metadata;
+    ExpDatasetData experiment_dataset;
     
     
     // Feature Config Data.
@@ -33,19 +34,24 @@ public class NNModelFileData extends ModelFileData implements Serializable
                            SimpleNeuralNetwork para_network,
                            TrainableDataSet para_dataSet,
                            SelectedFeature para_selF,
-                           Experiment para_exp)
+                           Experiment para_exp,
+                           double para_accResult_specificModel,
+                           double para_accResult_averageOverFolds)
     {
         
         // Create object which will be stored to file.
         
         algorithm = para_algName;
-        experiment_name = para_fileName;
         
-        // Timestamp.
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();
-        experiment_timestamp = dateFormat.format(date);
-                
+        experiment_metadata = new ExpMetaData(para_fileName,
+                                              "dd/MM/yyyy   HH:mm:ss",
+                                              para_exp.expStartTimestampProperty().get(),
+                                              para_exp.expCompleteTimestampProperty().get());
+        
+        experiment_dataset = new ExpDatasetData(para_exp.idataProperty().get().getAbsolutePath(),
+                                                para_exp.orderProperty().get().getAbsolutePath(),
+                                                para_accResult_specificModel,
+                                                para_accResult_averageOverFolds);
         
         
         // Selected Features (ANN inputs)

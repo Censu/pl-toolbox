@@ -86,7 +86,7 @@ public class PLNeuroEvolution extends PLAlgorithm {
     public Model run() {
        Logger.getLogger("plt.logger").log(Level.INFO, "run PLNeuroEvolution");
        this.ne.runFor(this.configurator.iterations());
-        final SimpleNeuralNetwork resultNetwork = ne.getNeuralNetuork(); 
+        final SimpleNeuralNetwork resultNetwork = ne.getNeuralNetuork();
         return modelForNetwork(resultNetwork, this.getDataset(), this.getFeatureSelection());
 
     }
@@ -129,7 +129,7 @@ public class PLNeuroEvolution extends PLAlgorithm {
             
             
             @Override
-            public void save(File file, Experiment experiment) throws IOException{
+            public void save(File file, Experiment experiment, double accResult_specificModel, double accResult_averageOverFolds) throws IOException{
                 try {
                  
                     // Construct file data for chosen model.
@@ -138,7 +138,9 @@ public class PLNeuroEvolution extends PLAlgorithm {
                                                                      network,
                                                                      this.getDataSet(),
                                                                      this.selectedFeature(),
-                                                                     experiment);        
+                                                                     experiment,
+                                                                     accResult_specificModel,
+                                                                     accResult_averageOverFolds);        
                     
                     // Store data to file as JSON.
                     JsonObjIO jsonRW = new JsonObjIO();

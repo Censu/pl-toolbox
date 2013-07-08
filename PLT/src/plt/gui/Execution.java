@@ -1,5 +1,6 @@
 package plt.gui;
 
+import java.util.Calendar;
 import java.util.logging.*;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -10,17 +11,18 @@ import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import plt.gui.customcomponents.ExecutionModalPopup;
 import plt.report.Report;
+import plt.utils.TimeHelper;
 
 /**
  *
@@ -32,8 +34,14 @@ public class Execution  {
     private final Logger logger;
     
     Thread execThread;
+    Thread timerThread;
     boolean terminatedFlag;
     Report latestReport;
+    
+    Text txtCurrDuration;
+    Calendar cStart;
+    
+    boolean haltTimerThread;
     
     public Execution(Experiment exp) {
         super();
@@ -43,6 +51,8 @@ public class Execution  {
         execThread = null;
         terminatedFlag = false;
         latestReport = null;
+        
+        haltTimerThread = false;
     }
 
     public void show(final Stage stage) {
@@ -58,6 +68,11 @@ public class Execution  {
         final ObservableList<String> items = FXCollections.observableArrayList();
         list.setItems(items);
         
+        final VBox progressUpdateBotBox = new VBox(2);
+        final BorderPane progressUpdateFirstHBox = new BorderPane();
+        Text txtCurrTask = new Text("test");                // WARNING: Using Label instead of Text hangs the program.
+        txtCurrTask.textProperty().bind(ExecutionProgress.currTaskTextIndicator);
+        txtCurrDuration = new Text("");
         final HBox progressUpdateHBox = new HBox(10);
         ProgressBar pBar = new ProgressBar(0);
         pBar.progressProperty().bind(ExecutionProgress.totProgress);
@@ -77,11 +92,14 @@ public class Execution  {
                 }
             }
         };
+        progressUpdateFirstHBox.setLeft(txtCurrTask);
+        progressUpdateFirstHBox.setRight(txtCurrDuration);
         progressUpdateHBox.getChildren().addAll(pBar,pIndi,btnAbort);
+        progressUpdateBotBox.getChildren().addAll(progressUpdateFirstHBox,progressUpdateHBox);
         
         
         final ExecutionModalPopup emp = new ExecutionModalPopup();
-        emp.show(parent, list, progressUpdateHBox, btnAbort, abortHandler, 400, 600);
+        emp.show(parent, list, progressUpdateBotBox, btnAbort, abortHandler, 400, 600);
 
         logger.addHandler(new Handler() {
 
@@ -110,7 +128,7 @@ public class Execution  {
 
             @Override
             protected Report call() throws Exception {
-                               
+           
                 return self.experiment.start();
             }
         };
@@ -125,6 +143,13 @@ public class Execution  {
                 if(! terminatedFlag)
                 {
                     latestReport = t1;
+                    
+                    haltTimerThread = true;
+                    
+                    
+                    progressUpdateBotBox.getChildren().clear();
+                    progressUpdateFirstHBox.getChildren().clear();
+                    
                     
                     progressUpdateHBox.getChildren().clear();
                     btnAbort.setText("Close Console");
@@ -147,6 +172,7 @@ public class Execution  {
                     
                     
                     progressUpdateHBox.getChildren().addAll(btnCompleteNotice,btnGenerateReport,btnAbort);
+                    progressUpdateBotBox.getChildren().add(progressUpdateHBox);
                     
                     button.disableProperty().set(false);
                     button.textProperty().set("Close console");
@@ -157,8 +183,29 @@ public class Execution  {
             }
         });
         
+        timerThread = new Thread(new TimerTask());
+        timerThread.start();
+        
         execThread = new Thread(task);
         execThread.start();
+    }
+    
+    class TimerTask implements Runnable
+    {
+        public TimerTask()
+        {
+            cStart = Calendar.getInstance();
+        }
+
+        @Override
+        public void run() 
+        {
+            while(! haltTimerThread)
+            {
+                Calendar currTStamp = Calendar.getInstance();
+                txtCurrDuration.setText( TimeHelper.calculateDuration(cStart, currTStamp) );
+            }
+        }
     }
     
     
