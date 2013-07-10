@@ -403,8 +403,10 @@ class Solver {
 
         
 	void Solve(int l, QMatrix Q, double[] p_, byte[] y_,
-		   double[] alpha_, double Cp, double Cn, double eps, SolutionInfo si, int shrinking)
+		   double[] alpha_, double Cp, double Cn, double eps, SolutionInfo si, int shrinking) throws InterruptedException
 	{
+                ExecutionProgress.setTaskSubHeader("R_SVM Setup");
+            
 		this.l = l;
 		this.Q = Q;
 		QD = Q.get_QD();
@@ -440,6 +442,13 @@ class Solver {
 			{
 				G[i] = p[i];
 				G_bar[i] = 0;
+                                
+                                
+                                if((ExecutionProgress.needToShutdown())||(ExecutionProgress.hasInterruptRequest(1)))
+                                {
+                                    ExecutionProgress.signalDeactivation(1);
+                                    throw new InterruptedException();
+                                }
 			}
 			for(i=0;i<l;i++)
                         {
@@ -457,6 +466,12 @@ class Solver {
                         
                                 
                                 //System.out.println("I = "+i);
+                                
+                                if((ExecutionProgress.needToShutdown())||(ExecutionProgress.hasInterruptRequest(1)))
+                                {
+                                    ExecutionProgress.signalDeactivation(1);
+                                    throw new InterruptedException();
+                                }
                         }
                                 
 		}
@@ -643,6 +658,11 @@ class Solver {
 
                         
                         ExecutionProgress.incrementTaskProgByPerc(1.0f / (max_iter * 1.0f));
+                        if((ExecutionProgress.needToShutdown())||(ExecutionProgress.hasInterruptRequest(1)))
+                        {
+                            ExecutionProgress.signalDeactivation(1);
+                            throw new InterruptedException();
+                        }
 		}
 		
 		if(iter >= max_iter)
@@ -914,7 +934,7 @@ final class Solver_NU extends Solver
 
 	void Solve(int l, QMatrix Q, double[] p, byte[] y,
 		   double[] alpha, double Cp, double Cn, double eps,
-		   SolutionInfo si, int shrinking)
+		   SolutionInfo si, int shrinking) throws InterruptedException
 	{
 		this.si = si;
 		super.Solve(l,Q,p,y,alpha,Cp,Cn,eps,si,shrinking);
@@ -1576,7 +1596,7 @@ public class svm {
 
 	private static void solve_c_svc(svm_problem prob, svm_parameter param,
 					double[] alpha, Solver.SolutionInfo si,
-					double Cp, double Cn)
+					double Cp, double Cn) throws InterruptedException
 	{
 		int l = prob.l;
 		double[] minus_ones = new double[l];
@@ -1609,7 +1629,7 @@ public class svm {
         
         private static void solve_rank_svm(svm_problem prob, svm_parameter param,
                                            double[] alpha, Solver.SolutionInfo si,
-                                           double Cp, double Cn)
+                                           double Cp, double Cn) throws InterruptedException
 	{
 		int l = prob.l;
 		double[] zeros = new double[l];
@@ -1639,7 +1659,7 @@ public class svm {
         
 
 	private static void solve_nu_svc(svm_problem prob, svm_parameter param,
-					double[] alpha, Solver.SolutionInfo si)
+					double[] alpha, Solver.SolutionInfo si) throws InterruptedException
 	{
 		int i;
 		int l = prob.l;
@@ -1690,7 +1710,7 @@ public class svm {
 	}
 
 	private static void solve_one_class(svm_problem prob, svm_parameter param,
-					double[] alpha, Solver.SolutionInfo si)
+					double[] alpha, Solver.SolutionInfo si) throws InterruptedException
 	{
 		int l = prob.l;
 		double[] zeros = new double[l];
@@ -1718,7 +1738,7 @@ public class svm {
 	}
 
 	private static void solve_epsilon_svr(svm_problem prob, svm_parameter param,
-					double[] alpha, Solver.SolutionInfo si)
+					double[] alpha, Solver.SolutionInfo si) throws InterruptedException
 	{
 		int l = prob.l;
 		double[] alpha2 = new double[2*l];
@@ -1751,7 +1771,7 @@ public class svm {
 	}
 
 	private static void solve_nu_svr(svm_problem prob, svm_parameter param,
-					double[] alpha, Solver.SolutionInfo si)
+					double[] alpha, Solver.SolutionInfo si) throws InterruptedException
 	{
 		int l = prob.l;
 		double C = param.C;
@@ -1794,7 +1814,7 @@ public class svm {
 
 	static decision_function svm_train_one(
 		svm_problem prob, svm_parameter param,
-		double Cp, double Cn)
+		double Cp, double Cn) throws InterruptedException
 	{
 		double[] alpha = new double[prob.l];
 		Solver.SolutionInfo si = new Solver.SolutionInfo();
@@ -2039,7 +2059,7 @@ public class svm {
 	}
 
 	// Cross-validation decision values for probability estimates
-	private static void svm_binary_svc_probability(svm_problem prob, svm_parameter param, double Cp, double Cn, double[] probAB)
+	private static void svm_binary_svc_probability(svm_problem prob, svm_parameter param, double Cp, double Cn, double[] probAB) throws InterruptedException
 	{
 		int i;
 		int nr_fold = 5;
@@ -2120,7 +2140,7 @@ public class svm {
 	}
 
 	// Return parameter of a Laplace distribution 
-	private static double svm_svr_probability(svm_problem prob, svm_parameter param)
+	private static double svm_svr_probability(svm_problem prob, svm_parameter param) throws InterruptedException
 	{
 		int i;
 		int nr_fold = 5;
@@ -2232,7 +2252,7 @@ public class svm {
 	//
 	// Interface functions
 	//
-	public static svm_model svm_train(svm_problem prob, svm_parameter param)
+	public static svm_model svm_train(svm_problem prob, svm_parameter param) throws InterruptedException
 	{
 		svm_model model = new svm_model();
 		model.param = param;
@@ -2367,6 +2387,11 @@ public class svm {
 					}
 
 					f[p] = svm_train_one(sub_prob,param,weighted_C[i],weighted_C[j]);
+                                        if((ExecutionProgress.needToShutdown())||(ExecutionProgress.hasInterruptRequest(1)))
+                                        {
+                                            ExecutionProgress.signalDeactivation(1);
+                                            throw new InterruptedException();
+                                        }
 					for(k=0;k<ci;k++)
 						if(!nonzero[si+k] && Math.abs(f[p].alpha[k]) > 0)
 							nonzero[si+k] = true;
@@ -2471,7 +2496,7 @@ public class svm {
 	}
 	
 	// Stratified cross validation
-	public static void svm_cross_validation(svm_problem prob, svm_parameter param, int nr_fold, double[] target)
+	public static void svm_cross_validation(svm_problem prob, svm_parameter param, int nr_fold, double[] target) throws InterruptedException
 	{
 		int i;
 		int[] fold_start = new int[nr_fold+1];

@@ -61,7 +61,14 @@ public abstract class PLAlgorithm {
         }
 
         if (this.result == null) {
-            this.result = run();
+            try
+            {
+                this.result = run();
+            }
+            catch(InterruptedException ex)
+            {
+                return null;
+            }
         }
 
         return this.result;
@@ -84,7 +91,7 @@ public abstract class PLAlgorithm {
         return this.untrainedModel;
     }
 
-    protected abstract Model run();
+    protected abstract Model run() throws InterruptedException;
     protected abstract Model beforeRun();
     
     public abstract ArrayList<Object[]> getProperties();

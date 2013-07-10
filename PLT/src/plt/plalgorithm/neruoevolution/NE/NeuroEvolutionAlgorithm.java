@@ -66,7 +66,7 @@ public class NeuroEvolutionAlgorithm {
         ga.runUntillReach(threshold);
     }
     
-    public void runFor(int times) {
+    public void runFor(int times) throws InterruptedException {
         Logger.getLogger("plt.logger").log(Level.INFO, "run NeuroEvolution for "+ times+" iterations ");
         ga.runFor(times);
     }

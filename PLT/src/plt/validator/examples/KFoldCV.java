@@ -49,6 +49,7 @@ public class KFoldCV extends Validator {
            
            algorithm.setDataSet(candidateDataSet);
            Model model = algorithm.createModel();
+           if(model == null) { return null; }
            
            double correctness = 0;
            for (int z=0; z<validationDataSet.getNumberOfPreferences(); z++) {

@@ -9,7 +9,7 @@ import plt.dataset.TrainableDataSet;
  */
 public interface IRankSvm
 {
-    boolean runRankSVM();
+    boolean runRankSVM() throws InterruptedException;
     double calculateUtility(double[] para_instanceFeatureData);
     SVMDataStore getDataForSVsAndAlphas(TrainableDataSet para_dSet);
 }

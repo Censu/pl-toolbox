@@ -1,14 +1,9 @@
 
 package plt.plalgorithm.backpropagation;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import plt.dataset.TrainableDataSet;
@@ -39,7 +34,7 @@ public class PLBackPropagation extends PLAlgorithm {
     }
     
     @Override
-    protected Model run() {
+    protected Model run() throws InterruptedException {
         
         Logger.getLogger("plt.logger").log(Level.INFO, "run PLBackPropagation");
 
@@ -80,6 +75,12 @@ public class PLBackPropagation extends PLAlgorithm {
             
             
             ExecutionProgress.incrementTaskProgByPerc(1.0f / (this.configurator.getMaxNumberOfIterations() * 1.0f));
+            
+            if((ExecutionProgress.needToShutdown())||(ExecutionProgress.hasInterruptRequest(1)))
+            {
+                ExecutionProgress.signalDeactivation(1);
+                throw new InterruptedException();
+            }
         }
         
         

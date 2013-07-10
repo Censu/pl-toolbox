@@ -4,6 +4,7 @@
  */
 package plt.plalgorithm.neruoevolution.GA;
 
+import java.lang.InterruptedException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import plt.gui.ExecutionProgress;
@@ -53,7 +54,7 @@ public class GeneticAlgorithm {
                     
     }
     
-    public void runFor(int times) {
+    public void runFor(int times) throws InterruptedException {
         Logger.getLogger("plt.logger").log(Level.INFO, "run GeneticAlgorithm for "+times+" iterations");
 
         for (int i=0; i<times; i++) {
@@ -69,7 +70,12 @@ public class GeneticAlgorithm {
             //Logger.getLogger("plt.logger").log(Level.INFO, "generation ["+(i+1)+"/"+times+"]");
             //Logger.getLogger("plt.logger").log(Level.INFO, "max fitness:"+population.getMaxFitness());
             
-            ExecutionProgress.incrementTaskProgByPerc(1.0f / (times * 1.0f));
+            ExecutionProgress.incrementTaskProgByPerc(1.0f / (times * 1.0f));          
+            if((ExecutionProgress.needToShutdown())||(ExecutionProgress.hasInterruptRequest(1)))
+            {
+                ExecutionProgress.signalDeactivation(1);
+                throw new InterruptedException();
+            }
         }
          
         System.out.println("pop:"+population.getMaxFitness());

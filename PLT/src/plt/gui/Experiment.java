@@ -347,6 +347,7 @@ public class Experiment {
        
        Logger.getLogger("plt.logger").log(Level.INFO, "Execution End: "+TimeHelper.createTimestampStr(this.expCompleteTimestamp.get()));
        Logger.getLogger("plt.logger").log(Level.INFO, "Total Duration: "+TimeHelper.calculateDuration(this.expStartTimestamp.get(),this.expCompleteTimestamp.get()));
+       Logger.getLogger("plt.logger").log(Level.INFO, "Average Accuracy Over Folds: "+((Math.round(retRep.getAVGAccuracy() * 100) * 1000) / 1000)+"%");
        
        return retRep;
    }

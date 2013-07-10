@@ -64,7 +64,7 @@ public class RankSvmManager implements IRankSvm
     }
     
     @Override
-    public boolean runRankSVM()
+    public boolean runRankSVM() throws InterruptedException
     {
         // Safety Check.
         if(curr_dataset == null) return false;

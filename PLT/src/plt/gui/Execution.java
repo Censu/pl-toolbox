@@ -89,6 +89,8 @@ public class Execution  {
                 if(execThread != null)
                 {
                     execThread.interrupt();
+                    ExecutionProgress.requestThreadInterrupt(1); // Algorithm thread.
+                    ExecutionProgress.requestThreadInterrupt(2); // Timer thread.
                 }
             }
         };
@@ -124,11 +126,14 @@ public class Execution  {
             }
         });
         
-        Task<Report> task = new Task<Report>() {
-
+        Task<Report> task = new Task<Report>() 
+        {
+            int threadID = 1;
+            
             @Override
             protected Report call() throws Exception {
            
+                ExecutionProgress.registerThread(threadID);
                 return self.experiment.start();
             }
         };
@@ -192,6 +197,8 @@ public class Execution  {
     
     class TimerTask implements Runnable
     {
+        int threadID = 2;
+        
         public TimerTask()
         {
             cStart = Calendar.getInstance();
@@ -200,10 +207,16 @@ public class Execution  {
         @Override
         public void run() 
         {
-            while(! haltTimerThread)
+            ExecutionProgress.registerThread(threadID);
+            while((! haltTimerThread)&&(! ExecutionProgress.shutdownProgram)&&(! ExecutionProgress.hasInterruptRequest(threadID)))
             {
                 Calendar currTStamp = Calendar.getInstance();
                 txtCurrDuration.setText( TimeHelper.calculateDuration(cStart, currTStamp) );
+            }
+            
+            if((ExecutionProgress.needToShutdown())||(ExecutionProgress.hasInterruptRequest(threadID)))
+            {
+                ExecutionProgress.signalDeactivation(threadID);
             }
         }
     }

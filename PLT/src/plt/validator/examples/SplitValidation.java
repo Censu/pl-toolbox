@@ -64,6 +64,7 @@ public class SplitValidation extends Validator {
         
         algorithm.setDataSet(trainingDataSet);
         Model model = algorithm.createModel();
+        if(model == null) { return null; }
         
         double correctness = 0;
         for (int z = 0; z < validationDataSet.getNumberOfPreferences(); z++) {

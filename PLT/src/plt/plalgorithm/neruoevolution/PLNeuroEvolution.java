@@ -83,7 +83,7 @@ public class PLNeuroEvolution extends PLAlgorithm {
     }
 
     @Override
-    public Model run() {
+    public Model run() throws InterruptedException {
        Logger.getLogger("plt.logger").log(Level.INFO, "run PLNeuroEvolution");
        this.ne.runFor(this.configurator.iterations());
         final SimpleNeuralNetwork resultNetwork = ne.getNeuralNetuork();

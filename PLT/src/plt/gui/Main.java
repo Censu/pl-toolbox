@@ -1,10 +1,11 @@
 package plt.gui;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -29,5 +30,28 @@ public class Main extends Application
         stage.getIcons().add(new Image(DataSetTab.class.getResourceAsStream("plt_logo.png")));
         stage.setResizable(true);
         stage.show();
+        
+        
+        stage.setOnCloseRequest(new CloseHandler());
+    }
+    
+    class CloseHandler implements EventHandler<WindowEvent>
+    {
+        @Override
+        public void handle(WindowEvent t)
+        {
+            ExecutionProgress.shutdownProgram = true;
+            while(! ExecutionProgress.safeToShutdown())
+            {
+                try
+                {
+                    Thread.sleep(1000);
+                }
+                catch(Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+            }    
+        }   
     }
 }

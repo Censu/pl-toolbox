@@ -35,6 +35,7 @@ public class NoValidation extends Validator {
         
         
         Model model = algorithm.createModel();
+        if(model == null) { return null; }
         double correctness = 0;
         for (int z = 0; z < validationDataSet.getNumberOfPreferences(); z++) {
             Preference instance = validationDataSet.getPreference(z);

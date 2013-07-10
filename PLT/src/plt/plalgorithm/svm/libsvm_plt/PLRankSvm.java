@@ -36,7 +36,7 @@ public class PLRankSvm extends PLAlgorithm
     
     
     @Override
-    protected Model run()
+    protected Model run() throws InterruptedException
     {
         Logger.getLogger("plt.logger").log(Level.INFO, "run PLRankSvm");
 
