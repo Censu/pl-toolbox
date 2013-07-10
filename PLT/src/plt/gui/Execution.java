@@ -236,7 +236,7 @@ public class Execution  {
         
         final VBox progressUpdateBotBox = new VBox(2);
         final BorderPane progressUpdateFirstHBox = new BorderPane();
-        Text txtCurrTask = new Text("test");                // WARNING: Using Label instead of Text hangs the program.
+        Text txtCurrTask = new Text("");                // WARNING: Using Label instead of Text hangs the program.
         txtCurrTask.textProperty().bind(ExecutionProgress.currTaskTextIndicator);
         txtCurrDuration = new Text("");
         final HBox progressUpdateHBox = new HBox(10);

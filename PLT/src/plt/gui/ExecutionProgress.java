@@ -182,7 +182,7 @@ public class ExecutionProgress
 {
     // Min = 0, Max = 1.
     static SimpleFloatProperty totProgress = new SimpleFloatProperty(0);
-    static StringProperty currTaskTextIndicator = new SimpleStringProperty("test");
+    static StringProperty currTaskTextIndicator = new SimpleStringProperty("");
     
     
     static ArrayList<Float> progressStack;
@@ -203,7 +203,7 @@ public class ExecutionProgress
     public ExecutionProgress()
     {
         totProgress = new SimpleFloatProperty(0);
-        currTaskTextIndicator = new SimpleStringProperty("test");
+        currTaskTextIndicator = new SimpleStringProperty("");
         progressStack = new ArrayList<>();
         currTaskProgress = 0;
         
