@@ -174,7 +174,7 @@ import plt.plalgorithm.neruoevolution.GA.ParentSelection;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class RouletteWheelSelection implements ParentSelection {
     private List<Individual> source;

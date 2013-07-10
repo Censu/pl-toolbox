@@ -215,7 +215,7 @@ import plt.help.HelpDataStore;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class DataSetTab extends Tab {
 

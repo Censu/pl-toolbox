@@ -176,7 +176,7 @@ import plt.validator.Validator;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class NoValidation extends Validator {
 

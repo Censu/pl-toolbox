@@ -168,7 +168,7 @@ package plt.plalgorithm.neruoevolution.GA;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public interface GeneticEncoder {
     

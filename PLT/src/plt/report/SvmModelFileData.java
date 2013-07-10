@@ -180,7 +180,7 @@ import plt.utils.TimeHelper;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class SvmModelFileData extends ModelFileData implements Serializable
 {

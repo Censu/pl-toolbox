@@ -180,7 +180,7 @@ import plt.utils.Preference;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class RankSvmManager implements IRankSvm
 {

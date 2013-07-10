@@ -176,7 +176,7 @@ import javafx.scene.layout.VBox;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class ContentNActionPane extends BorderPane
 {

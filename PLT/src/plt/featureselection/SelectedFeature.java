@@ -172,7 +172,7 @@ import plt.plalgorithm.neruoevolution.GA.DNA;
 /**
  * This class represents a set of feature of a dataset selected to be used for a 
  * preference learning algorithm
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class SelectedFeature implements Cloneable {
     List<Integer> features;

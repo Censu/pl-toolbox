@@ -187,7 +187,7 @@ import plt.validator.examples.SplitValidation;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class BPExperiments extends Application {
 

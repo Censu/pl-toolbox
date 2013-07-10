@@ -170,7 +170,7 @@ import plt.plalgorithm.neruoevolution.NE.ActivationFunction;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public interface PLBackPropagationConfigurator {
        public int[] getTopology(int inputSize);

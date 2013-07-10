@@ -180,7 +180,7 @@ import plt.validator.Validator;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class KFoldCV extends Validator {
     public int k;

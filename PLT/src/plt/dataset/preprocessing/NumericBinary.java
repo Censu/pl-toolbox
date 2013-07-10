@@ -173,7 +173,7 @@ import plt.dataset.DataSet;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class NumericBinary extends PreprocessingOperation {
     private List<Double> possibleValues;

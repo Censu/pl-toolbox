@@ -172,7 +172,7 @@ import plt.model.Model;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class Report {
 

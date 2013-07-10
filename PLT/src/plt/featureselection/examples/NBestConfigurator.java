@@ -168,7 +168,7 @@ package plt.featureselection.examples;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 
 public interface NBestConfigurator {

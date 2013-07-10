@@ -179,7 +179,7 @@ import plt.gui.Experiment;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public abstract class ModelFileData implements Serializable
 {

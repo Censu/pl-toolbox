@@ -203,7 +203,7 @@ import plt.dataset.preprocessing.PreprocessingOperation;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class PreprocessingTab extends Tab {
 

@@ -168,7 +168,7 @@ package plt.plalgorithm.neruoevolution.NE;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public interface NetworkEvalutaor {
     public double evaluate(SimpleNeuralNetwork network);

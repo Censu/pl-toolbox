@@ -197,7 +197,7 @@ import plt.plalgorithm.svm.libsvm_plt.PLRankSvm;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class MasterGUI extends BorderPane
 {

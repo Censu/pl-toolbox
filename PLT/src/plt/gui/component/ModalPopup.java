@@ -182,7 +182,7 @@ import javafx.stage.StageStyle;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class ModalPopup {
 

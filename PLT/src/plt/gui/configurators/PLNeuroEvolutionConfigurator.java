@@ -199,7 +199,7 @@ import plt.plalgorithm.neruoevolution.NE.Sigmond;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class PLNeuroEvolutionConfigurator implements plt.plalgorithm.neruoevolution.PLNeuroEvolutionConfigurator {
 

@@ -172,7 +172,7 @@ import plt.plalgorithm.neruoevolution.GA.GenticalOperator;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class Invertion implements GenticalOperator {
     protected static Random random = new Random();

@@ -172,7 +172,7 @@ import plt.validator.Validator;
 /**
  * A FeatureSelection algorithm it's meant to select a number of features of a dataset
  * to be used in a preference learning algorithm
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public abstract class FeatureSelection {
 

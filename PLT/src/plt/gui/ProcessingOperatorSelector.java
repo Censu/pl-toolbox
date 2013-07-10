@@ -181,7 +181,7 @@ import plt.gui.component.ModalPopup;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class ProcessingOperatorSelector extends ModalPopup {
 

@@ -170,7 +170,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class PreprocessingInfo
 {

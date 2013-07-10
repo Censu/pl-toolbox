@@ -198,7 +198,7 @@ import plt.plalgorithm.svm.libsvm_plt.PLRankSvm;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class FeatureSelectionTab extends Tab {
 

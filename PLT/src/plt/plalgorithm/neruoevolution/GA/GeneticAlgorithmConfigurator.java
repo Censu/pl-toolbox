@@ -172,7 +172,7 @@ import plt.plalgorithm.neruoevolution.GA.genticaloperators.Invertion;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public interface GeneticAlgorithmConfigurator {
 

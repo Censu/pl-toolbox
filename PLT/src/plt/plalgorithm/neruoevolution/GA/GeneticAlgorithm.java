@@ -173,7 +173,7 @@ import plt.gui.ExecutionProgress;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class GeneticAlgorithm {
     private GeneticAlgorithmConfigurator configurator;

@@ -180,7 +180,7 @@ import javafx.scene.text.Text;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class ModulePane extends BorderPane
 {

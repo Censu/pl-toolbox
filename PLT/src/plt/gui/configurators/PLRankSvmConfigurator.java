@@ -182,7 +182,7 @@ import plt.plalgorithm.svm.libsvm_plt.IPLRankSvmConfigurator;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 
 public class PLRankSvmConfigurator implements IPLRankSvmConfigurator

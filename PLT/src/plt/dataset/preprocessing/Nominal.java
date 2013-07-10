@@ -172,7 +172,7 @@ import plt.dataset.DataSet;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class Nominal extends PreprocessingOperation {
     private List<String> possibleValues;

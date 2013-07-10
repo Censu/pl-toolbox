@@ -170,7 +170,7 @@ import plt.plalgorithm.neruoevolution.GA.GeneticAlgorithmConfigurator;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 
 public abstract class NeuroEvolutionAlgorithmConfigurator  {

@@ -170,7 +170,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class LinearFunction extends MathematicalFunction {
     int[] x;

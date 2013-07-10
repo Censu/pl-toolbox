@@ -183,7 +183,7 @@ import plt.report.SvmModelFileData;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class PLRankSvm extends PLAlgorithm
 {

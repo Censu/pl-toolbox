@@ -171,7 +171,7 @@ import javafx.scene.control.TextField;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class AdvanceTextField extends TextField {
     String regularExpression;

@@ -168,7 +168,7 @@ package plt.plalgorithm.svm.libsvm_plt;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class SVMDataStore
 {

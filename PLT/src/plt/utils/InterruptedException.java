@@ -168,7 +168,7 @@ package plt.utils;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class InterruptedException extends Exception
 {

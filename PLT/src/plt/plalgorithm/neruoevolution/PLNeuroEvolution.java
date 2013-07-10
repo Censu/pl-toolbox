@@ -187,7 +187,7 @@ import plt.utils.Preference;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class PLNeuroEvolution extends PLAlgorithm {
     private PLNeuroEvolutionConfigurator configurator;

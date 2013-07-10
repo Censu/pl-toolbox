@@ -168,7 +168,7 @@ package plt.report;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class ExpDatasetData
 {

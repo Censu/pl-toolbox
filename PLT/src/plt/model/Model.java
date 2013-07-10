@@ -175,7 +175,7 @@ import plt.gui.Experiment;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public abstract class Model {
     private TrainableDataSet dataSet;

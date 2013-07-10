@@ -171,7 +171,7 @@ import java.util.List;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class Preference {
     private int preferred;

@@ -171,7 +171,7 @@ import plt.report.Report;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public abstract class Validator {
 

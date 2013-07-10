@@ -193,7 +193,7 @@ import plt.validator.examples.NoValidation;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class Experiment {
     

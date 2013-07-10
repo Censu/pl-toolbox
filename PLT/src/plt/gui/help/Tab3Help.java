@@ -176,7 +176,7 @@ import plt.gui.component.ModalPopup;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class Tab3Help extends ModalPopup {
         public void show(Parent parent, final EventHandler eventHandler) {

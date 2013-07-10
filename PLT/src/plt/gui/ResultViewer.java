@@ -204,7 +204,7 @@ import plt.report.Report;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class ResultViewer {
     Experiment experiment;

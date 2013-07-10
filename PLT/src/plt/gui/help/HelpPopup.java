@@ -176,7 +176,7 @@ import plt.gui.component.ModalPopup;
 
 /**
  *
- * @author owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class HelpPopup extends ModalPopup 
 {

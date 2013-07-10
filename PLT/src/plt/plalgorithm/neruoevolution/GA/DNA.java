@@ -171,7 +171,7 @@ import java.util.Random;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class DNA implements Cloneable {
     public double[] vector;

@@ -180,7 +180,7 @@ import plt.gui.component.AdvanceTextField;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class NBestConfigurator implements plt.featureselection.examples.NBestConfigurator {
     private TextField n;

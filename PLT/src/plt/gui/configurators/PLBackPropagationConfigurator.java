@@ -198,7 +198,7 @@ import plt.plalgorithm.neruoevolution.NE.Sigmond;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 
 public class PLBackPropagationConfigurator implements plt.plalgorithm.backpropagation.PLBackPropagationConfigurator {

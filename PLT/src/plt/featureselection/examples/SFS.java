@@ -178,7 +178,7 @@ import plt.validator.Validator;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class SFS extends FeatureSelection {
     private NBestConfigurator configurator;

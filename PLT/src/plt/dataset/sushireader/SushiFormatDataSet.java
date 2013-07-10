@@ -177,7 +177,7 @@ import plt.utils.Preference;
 /**
  * The SUSHI format Reader Data Set.
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class SushiFormatDataSet implements DataSet {
 

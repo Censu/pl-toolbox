@@ -170,7 +170,7 @@ import plt.dataset.DataSet;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public abstract  class PreprocessingOperation {
     

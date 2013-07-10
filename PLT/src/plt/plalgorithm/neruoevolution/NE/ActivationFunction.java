@@ -168,7 +168,7 @@ package plt.plalgorithm.neruoevolution.NE;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public interface ActivationFunction {
     public double evalue(double input);

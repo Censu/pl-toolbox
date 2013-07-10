@@ -168,7 +168,7 @@ package plt.dataset.sushireader;
 
 /**
  *
- * @author Owner
+ * @author Institute of Digital Games, UoM Malta
  */
 public class UramakiFileParseStatus
 {

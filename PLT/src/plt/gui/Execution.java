@@ -192,7 +192,7 @@ import plt.utils.TimeHelper;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class Execution  {
 

@@ -173,7 +173,7 @@ import plt.plalgorithm.neruoevolution.NE.SimpleNeuralNetwork;
 
 /**
  *
- * @author luca
+ * @author Institute of Digital Games, UoM Malta
  */
 public class NeuralNetwork extends SimpleNeuralNetwork {
 
