@@ -190,8 +190,8 @@ import plt.validator.examples.NoValidation;
 import plt.validator.examples.SplitValidation;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public class SFSExperiments extends Application {
 

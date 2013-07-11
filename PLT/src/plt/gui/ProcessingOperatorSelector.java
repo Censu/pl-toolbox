@@ -180,8 +180,8 @@ import plt.dataset.preprocessing.*;
 import plt.gui.component.ModalPopup;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public class ProcessingOperatorSelector extends ModalPopup {
 

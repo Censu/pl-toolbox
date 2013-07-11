@@ -170,7 +170,10 @@ package plt.plalgorithm.svm.libsvm_plt;
 import plt.plalgorithm.svm.libsvm.svm_node;
 import plt.plalgorithm.svm.libsvm.svm_problem;
 
-
+/**
+ * PLT v1.0
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
+ */
 public class svm_problem_pl extends svm_problem
 {
     // Defs:

@@ -173,7 +173,8 @@ import plt.utils.Preference;
  * a PreprocessedDataSet is a TrainableDataSet, created from a DataSet and list of operation to be
  * applied to the object's features. Any operation define a transformation that will be applied to a feature.
  * 
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public class PreprocessedDataSet extends TrainableDataSet {
 

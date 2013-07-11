@@ -181,8 +181,8 @@ import plt.gui.component.AdvanceTextField;
 import plt.plalgorithm.svm.libsvm_plt.IPLRankSvmConfigurator;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * PLT v1.0
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
  */
 
 public class PLRankSvmConfigurator implements IPLRankSvmConfigurator

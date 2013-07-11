@@ -198,8 +198,11 @@ import plt.plalgorithm.neruoevolution.NE.Linear;
 import plt.plalgorithm.neruoevolution.NE.Sigmond;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * Original Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
+ * 
+ * Modified for PLT v1.0
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
  */
 public class PLNeuroEvolutionConfigurator implements plt.plalgorithm.neruoevolution.PLNeuroEvolutionConfigurator {
 

@@ -167,6 +167,10 @@ Library.*/
 
 package plt.plalgorithm.svm.libsvm_plt;
 
+/**
+ * PLT v1.0
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
+ */
 class PL_Object
 {
     int objID_actual;

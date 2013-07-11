@@ -170,8 +170,8 @@ import plt.plalgorithm.neruoevolution.GA.GeneticAlgorithmConfigurator;
 import plt.plalgorithm.neruoevolution.NE.ActivationFunction;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public interface PLNeuroEvolutionConfigurator   {
     

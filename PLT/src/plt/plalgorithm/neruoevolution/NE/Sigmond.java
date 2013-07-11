@@ -167,8 +167,8 @@ Library.*/
 package plt.plalgorithm.neruoevolution.NE;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public class Sigmond implements ActivationFunction {
 

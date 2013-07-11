@@ -179,8 +179,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * PLT v1.0
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
  */
 public class ModulePane extends BorderPane
 {

@@ -174,8 +174,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * 
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
  */
 public class Main extends Application
 {

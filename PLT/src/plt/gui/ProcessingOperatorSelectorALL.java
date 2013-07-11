@@ -182,6 +182,10 @@ import javafx.scene.text.FontWeight;
 import plt.dataset.preprocessing.*;
 import plt.gui.component.ModalPopup;
 
+/**
+ * PLT v1.0
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
+ */
 
 public class ProcessingOperatorSelectorALL extends ModalPopup {
 

@@ -169,8 +169,8 @@ package plt.plalgorithm.neruoevolution.NE;
 import plt.plalgorithm.neruoevolution.GA.GeneticAlgorithmConfigurator;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 
 public abstract class NeuroEvolutionAlgorithmConfigurator  {

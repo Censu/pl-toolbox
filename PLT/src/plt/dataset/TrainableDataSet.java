@@ -178,7 +178,8 @@ import plt.utils.Preference;
  * by a DataSet and a list of preprocessing operation to apply to it.
  * An important difference is that the features of a DataSet are String of a TrainableDataset are Double.
  * 
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public abstract class TrainableDataSet {
     

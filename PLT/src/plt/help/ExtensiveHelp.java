@@ -170,8 +170,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * PLT v1.0
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
  */
 public class ExtensiveHelp 
 {

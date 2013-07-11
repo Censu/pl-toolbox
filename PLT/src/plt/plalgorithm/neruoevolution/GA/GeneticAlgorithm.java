@@ -172,8 +172,8 @@ import java.util.logging.Logger;
 import plt.gui.ExecutionProgress;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public class GeneticAlgorithm {
     private GeneticAlgorithmConfigurator configurator;

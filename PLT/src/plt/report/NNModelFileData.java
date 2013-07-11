@@ -176,6 +176,10 @@ import plt.gui.Experiment;
 import plt.plalgorithm.neruoevolution.NE.SimpleNeuralNetwork;
 import plt.utils.TimeHelper;
 
+/**
+ * PLT v1.0
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
+ */
 public class NNModelFileData extends ModelFileData implements Serializable
 {
     String algorithm;

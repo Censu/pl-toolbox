@@ -170,8 +170,8 @@ import plt.plalgorithm.PLAlgorithm;
 import plt.report.Report;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public abstract class Validator {
 

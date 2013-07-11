@@ -179,8 +179,8 @@ import plt.plalgorithm.svm.libsvm.svm_parameter;
 import plt.utils.Preference;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * PLT v1.0
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
  */
 public class RankSvmManager implements IRankSvm
 {

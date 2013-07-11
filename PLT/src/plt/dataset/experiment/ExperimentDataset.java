@@ -173,7 +173,8 @@ import plt.utils.Preference;
 
 /**
  *
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public class ExperimentDataset implements DataSet {
     private final int numberOfReports;

@@ -169,6 +169,7 @@ package plt.utils;
 import java.util.Random;
 
 /*
+ * PLT v1.0
  * @author Héctor Pérez Martínez <hpminf@gmail.com>
  */
 

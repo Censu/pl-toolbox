@@ -169,8 +169,8 @@ package plt.plalgorithm.neruoevolution.NE;
 import java.util.Arrays;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public class SimpleNeuralNetwork implements Cloneable {
 

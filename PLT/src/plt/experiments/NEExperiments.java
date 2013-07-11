@@ -193,8 +193,8 @@ import plt.validator.Validator;
 import plt.validator.examples.SplitValidation;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public class NEExperiments extends Application {
 

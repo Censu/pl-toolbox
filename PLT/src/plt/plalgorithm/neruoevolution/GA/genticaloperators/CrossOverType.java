@@ -166,6 +166,10 @@ Library.*/
 
 package plt.plalgorithm.neruoevolution.GA.genticaloperators;
 
+/**
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
+ */
 public enum CrossOverType {
     ONEPOINT, TWOPOINT, UNIFORM
 }

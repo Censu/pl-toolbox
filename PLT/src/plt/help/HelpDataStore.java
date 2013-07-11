@@ -173,8 +173,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * PLT v1.0
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
  */
 public class HelpDataStore 
 {

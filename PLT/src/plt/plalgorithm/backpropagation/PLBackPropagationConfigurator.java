@@ -169,8 +169,8 @@ package plt.plalgorithm.backpropagation;
 import plt.plalgorithm.neruoevolution.NE.ActivationFunction;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * Pre PLT v1.0
+ * @author Luca Querella <lucq@itu.dk>
  */
 public interface PLBackPropagationConfigurator {
        public int[] getTopology(int inputSize);

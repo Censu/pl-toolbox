@@ -170,8 +170,8 @@ package plt.plalgorithm.svm.libsvm_plt;
 import plt.dataset.TrainableDataSet;
 
 /**
- *
- * @author Institute of Digital Games, UoM Malta
+ * PLT v1.0
+ * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
  */
 public interface IRankSvm
 {
