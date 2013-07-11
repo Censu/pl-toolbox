@@ -192,7 +192,7 @@ public class Main extends Application
         Scene mainScene2 = new Scene(mGUI, 1000, 900);
         mainScene2.getStylesheets().add(Main.class.getResource("MainCSS.css").toExternalForm());
         stage.setScene(mainScene2);
-        stage.setTitle("Preference Learning Toolbox (PLT)");
+        stage.setTitle("Preference Learning Toolbox (PLT) - v1.0");
         stage.getIcons().add(new Image(DataSetTab.class.getResourceAsStream("plt_logo.png")));
         stage.setResizable(true);
         stage.show();

@@ -176,7 +176,7 @@ import javafx.beans.property.StringProperty;
 
 /**
  *
- * @author user
+ * @author Institute of Digital Games, UoM Malta
  */
 public class ExecutionProgress 
 {

@@ -248,9 +248,9 @@ public class PLBackPropagationConfigurator implements plt.plalgorithm.backpropag
         errorThreeshold = new AdvanceTextField("[0-9.]","0.1");
         maxNumberOfIterations = new AdvanceTextField("[0-9]","10");
         
-        learningRate.setPrefWidth(30);
-        errorThreeshold.setPrefWidth(30);
-        maxNumberOfIterations.setPrefWidth(30);
+        learningRate.setPrefWidth(100);
+        errorThreeshold.setPrefWidth(100);
+        maxNumberOfIterations.setPrefWidth(100);
     }
     
     

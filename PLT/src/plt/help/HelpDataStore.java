@@ -174,7 +174,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author user
+ * @author Institute of Digital Games, UoM Malta
  */
 public class HelpDataStore 
 {

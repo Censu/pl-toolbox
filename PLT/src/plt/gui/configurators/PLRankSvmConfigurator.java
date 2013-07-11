@@ -203,8 +203,8 @@ public class PLRankSvmConfigurator implements IPLRankSvmConfigurator
         cbKernelType = new ChoiceBox<>(availableKernelTypes);
         cbKernelType.valueProperty().addListener(new KernelChangeListener());
         
-        txtGamma = new AdvanceTextField("[0-9.]","0");
-        txtDegree = new AdvanceTextField("[0-9.]","3");
+        txtGamma = new AdvanceTextField("[0-9.]","1");
+        txtDegree = new AdvanceTextField("[0-9.]","2");
         
         
         float inputColWidth = 200;

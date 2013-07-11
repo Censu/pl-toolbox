@@ -181,7 +181,7 @@ import plt.gui.DataSetTab;
 
 /**
  *
- * @author user
+ * @author Institute of Digital Games, UoM Malta
  */
 public class ButtonedTitledPane extends TitledPane
 {

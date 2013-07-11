@@ -184,7 +184,7 @@ import javafx.stage.StageStyle;
 
 /**
  *
- * @author user
+ * @author Institute of Digital Games, UoM Malta
  */
 public class ExecutionModalPopup {
 
