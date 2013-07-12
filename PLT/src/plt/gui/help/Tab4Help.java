@@ -229,7 +229,7 @@ public class Tab4Help extends ModalPopup {
 "space. The decision boundary of the classifier is given by a linear combination of training samples "+
                     "(called <i>support vectors</i>) in the projected space. The projection in provided by the kernel function that the user must select. "
                     + "The support vector and weights are selected to satisfy a set of constrains derived from the input samples and a cost parameter (C) defined by the user which regulates the penalization of misclassified training samples; in this implementation," +
-                    " the quadratic programmer solver contained in <a href=\"http://www.csie.ntu.edu.tw/~cjlin/libsvm/\">LIBSVM</a> is used." +
+                    " the quadratic programmer solver contained in LIBSVM http://www.csie.ntu.edu.tw/~cjlin/libsvm/ is used." +
                     "<ul><li>Ranking SVM: this training algorithm uses the same solver as standard training algorithms for binary SVMs; "+
                     "the only difference lies in the set of constrains which are defined in terms of pairwise preferences between trainig samples.</li></ul>"+
                     "</ul>\n" +

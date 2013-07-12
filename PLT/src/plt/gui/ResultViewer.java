@@ -168,6 +168,7 @@ package plt.gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -535,23 +536,26 @@ public class ResultViewer {
          ObservableList<ModelTableDataRow> data = FXCollections.observableArrayList();
          
          double averageAccuracy = 0;
+         DecimalFormat df = new DecimalFormat("#.##");
          if(! experiment.useValidatorProperty().get())
          {
-             data.add(new ModelTableDataRow(0, "Training Accuracy", this.report.resultAccurancy(0)));
-             averageAccuracy = this.report.resultAccurancy(0);
+             double tmpAcc = Double.parseDouble(df.format(this.report.resultAccurancy(0) * 100));
+             data.add(new ModelTableDataRow(0, "Training Accuracy", tmpAcc));
+             averageAccuracy = tmpAcc;
          }
          else
          {
             double tmpSum = 0;
             for (int i=0; i<this.report.numberOfResults();i++)
             {
-               data.add(new ModelTableDataRow(i, "Fold "+(i+1), this.report.resultAccurancy(i) * 100));
-               tmpSum += this.report.resultAccurancy(i);
+               double tmpAcc = Double.parseDouble(df.format(this.report.resultAccurancy(i) * 100));
+               data.add(new ModelTableDataRow(i, "Fold "+(i+1), tmpAcc));
+               tmpSum += tmpAcc;
             }
             
             averageAccuracy = (tmpSum/this.report.numberOfResults());
          }
-         averageAccuracy = ((Math.round(averageAccuracy * 100) * 1000) / 1000);
+         averageAccuracy = Double.parseDouble(df.format(averageAccuracy));
          
          
          TableColumn col1 = new TableColumn("Model Name");

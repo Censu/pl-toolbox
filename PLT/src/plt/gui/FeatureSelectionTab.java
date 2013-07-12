@@ -240,7 +240,7 @@ public class FeatureSelectionTab extends Tab {
         nestedBp.setPrefWidth(650);
         
         final ModulePane featureSelection = new ModulePane("Feature Selection", new ArrayList<String>(Arrays.asList("None", "nBest", "SFS")),new Pane(),"modulePane3",850);
-        final ModulePane algorithmMPane = new ModulePane("Algorithm", new ArrayList<String>(Arrays.asList("None","Evolving NN","Back propagation","Rank SVM")), new Pane(), "modulePane1",850);
+        final ModulePane algorithmMPane = new ModulePane("Algorithm", new ArrayList<String>(Arrays.asList("None","Evolving NN","Back propagation","Ranking SVM")), new Pane(), "modulePane1",850);
         final ModulePane validatorMPane = new ModulePane("Cross Validation", new ArrayList<String>(Arrays.asList("None", "K-Fold")),new Pane(),"modulePane2",850);
         
                 
@@ -382,7 +382,7 @@ public class FeatureSelectionTab extends Tab {
                     algorithmMPane.disableMPane();
                     validatorMPane.disableMPane();
                     
-                    algorithmMPane.setChoiceBoxOptions(new ArrayList<String>(Arrays.asList("None","Evolving NN","Back propagation","Rank SVM")));
+                    algorithmMPane.setChoiceBoxOptions(new ArrayList<String>(Arrays.asList("None","Evolving NN","Back propagation","Ranking SVM")));
                 }
                 else
                 {
@@ -412,7 +412,7 @@ public class FeatureSelectionTab extends Tab {
                     if((featureSelection.choiceBox.getSelectionModel().getSelectedIndex() != 0)
                     &&(algorithmMPane.choiceBox.getItems().size() != 3))
                     {
-                        algorithmMPane.setChoiceBoxOptions(new ArrayList<String>(Arrays.asList("Evolving NN","Back propagation","Rank SVM")));
+                        algorithmMPane.setChoiceBoxOptions(new ArrayList<String>(Arrays.asList("Evolving NN","Back propagation","Ranking SVM")));
                     }
                     
                     
@@ -423,7 +423,7 @@ public class FeatureSelectionTab extends Tab {
                         String txtChoice = (String) t;
                         if(txtChoice.equals("Evolving NN")) { i = 0; }
                         else if(txtChoice.equals("Back propagation")) { i = 1; }
-                        else if(txtChoice.equals("Rank SVM")) { i = 2; }
+                        else if(txtChoice.equals("Ranking SVM")) { i = 2; }
                     }
                     
                     switch (i) {

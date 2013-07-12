@@ -167,8 +167,8 @@ Library.*/
 package plt.gui;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.*;
@@ -513,10 +513,10 @@ public class Experiment {
        // Record Experiment Complete Timestamp
        this.expCompleteTimestamp.setValue(Calendar.getInstance());
        
-       
+       DecimalFormat df = new DecimalFormat("#.##");
        Logger.getLogger("plt.logger").log(Level.INFO, "Execution End: "+TimeHelper.createTimestampStr(this.expCompleteTimestamp.get()));
        Logger.getLogger("plt.logger").log(Level.INFO, "Total Duration: "+TimeHelper.calculateDuration(this.expStartTimestamp.get(),this.expCompleteTimestamp.get()));
-       Logger.getLogger("plt.logger").log(Level.INFO, "Average Accuracy Over Folds: "+((Math.round(retRep.getAVGAccuracy() * 100) * 1000) / 1000)+"%");
+       Logger.getLogger("plt.logger").log(Level.INFO, "Average Accuracy Over Folds: "+Double.parseDouble(df.format(retRep.getAVGAccuracy() * 100))+"%");
        
        return retRep;
    }

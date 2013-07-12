@@ -390,7 +390,38 @@ public class MasterGUI extends BorderPane
                                 notification.show(new Label("SVM ERROR: Gamma cannot be set to 0."), parentStage.getScene().getRoot(),null,new Button("OK"), 200,550,false);  
                                 
                                 allClear = false;
-                            }        
+                            }
+                            
+                            if(svmConfig.degreeRequired())
+                            {
+                                try
+                                {
+                                    Integer.parseInt(svmConfig.getDegreeTextboxContents());
+                                }
+                                catch(Exception NumberFormatException)
+                                {
+                                    ModalPopup notification = new ModalPopup();
+                                    notification.show(new Label("SVM ERROR: Invalid Degree value \\"+svmConfig.getDegreeTextboxContents()+"\\"+"."), parentStage.getScene().getRoot(),null,new Button("OK"), 200,550,false);  
+
+                                    allClear = false;
+                                }
+                            }
+                            
+                            if(svmConfig.betaRequired())
+                            {
+                                try
+                                {
+                                    Integer.parseInt(svmConfig.getBetaTextboxContents());
+                                }
+                                catch(Exception NumberFormatException)
+                                {
+                                    ModalPopup notification = new ModalPopup();
+                                    notification.show(new Label("SVM ERROR: Invalid Beta value \\"+svmConfig.getBetaTextboxContents()+"\\"+"."), parentStage.getScene().getRoot(),null,new Button("OK"), 200,550,false);  
+
+                                    allClear = false;
+                                }
+                            }
+                            
                         }
                     }
                     
@@ -431,7 +462,39 @@ public class MasterGUI extends BorderPane
                             notification.show(new Label("SVM ERROR: Gamma cannot be set to 0."), parentStage.getScene().getRoot(),null,new Button("OK"), 200,550,false);  
                             
                             allClear = false;
-                        }        
+                        }
+                        
+                        if(svmConfig.degreeRequired())
+                        {
+                            try
+                            {
+                                Integer.parseInt(svmConfig.getDegreeTextboxContents());
+                            }
+                            catch(Exception NumberFormatException)
+                            {
+                                ModalPopup notification = new ModalPopup();
+                                notification.show(new Label("SVM ERROR: Invalid Degree value \\"+svmConfig.getDegreeTextboxContents()+"\\"+"."), parentStage.getScene().getRoot(),null,new Button("OK"), 200,550,false);  
+
+                                allClear = false;
+                            }
+                        }
+                        
+                        
+                        if(svmConfig.betaRequired())
+                        {
+                            try
+                            {
+                                Integer.parseInt(svmConfig.getBetaTextboxContents());
+                            }
+                            catch(Exception NumberFormatException)
+                            {
+                                ModalPopup notification = new ModalPopup();
+                                notification.show(new Label("SVM ERROR: Invalid Beta value \\"+svmConfig.getBetaTextboxContents()+"\\"+"."), parentStage.getScene().getRoot(),null,new Button("OK"), 200,550,false);  
+
+                                allClear = false;
+                            }
+                        }
+                        
                     }
                     
 

@@ -213,7 +213,8 @@ public class PLRankSvm extends PLAlgorithm
         HashMap<String,Object> userConfig = new HashMap<>();
         userConfig.put("kernel", svmConfig.getKernelType());
         userConfig.put("gamma", svmConfig.getGamma());
-        userConfig.put("degree", svmConfig.getDegree());     
+        userConfig.put("degree", svmConfig.getDegree());
+        userConfig.put("beta", svmConfig.getBeta());
         
         svmMang = new RankSvmManager();
         svmMang.performSetup(this.getDataset(),this.getFeatureSelection(),userConfig);
@@ -228,7 +229,7 @@ public class PLRankSvm extends PLAlgorithm
         
         // Multilayer Perceptron Properties:
         
-        String subSec1_header = "Rank SVM";
+        String subSec1_header = "Ranking SVM";
         ArrayList<String[]> subSec1_content = new ArrayList<>();
         
         String[] cPair1 = new String[2];
@@ -252,7 +253,13 @@ public class PLRankSvm extends PLAlgorithm
             subSec1_content.add(cPair3);
         }
                 
-        
+        if(svmConfig.degreeRequired())
+        {
+            String[] cPair4 = new String[2];
+            cPair4[0] = "Beta:";
+            cPair4[1] = ""+svmConfig.getBeta();
+            subSec1_content.add(cPair4);
+        }
         
         Object[] wrapper1 = new Object[2];
         wrapper1[0] = subSec1_header;

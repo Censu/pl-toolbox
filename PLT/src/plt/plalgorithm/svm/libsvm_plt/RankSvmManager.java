@@ -494,12 +494,14 @@ public class RankSvmManager implements IRankSvm
         
         String kernelType = (String) para_userConfig.get("kernel");
         if(kernelType.equals("Linear")) { param.kernel_type = svm_parameter.LINEAR; }
-        else if(kernelType.equals("Poly")) { param.kernel_type = svm_parameter.POLY; }
+        else if(kernelType.equals("Polynomial")) { param.kernel_type = svm_parameter.POLY; }
         else if(kernelType.equals("RBF")) { param.kernel_type = svm_parameter.RBF; }
+        else if(kernelType.equals("Sigmoid")) { param.kernel_type = svm_parameter.SIGMOID; }
         
         // Guaranteed to be != 0 due to pre-experiment validation check.
         param.gamma = (double) para_userConfig.get("gamma");
         param.degree = (int) ((double) para_userConfig.get("degree"));
+        param.coef0 = (double) para_userConfig.get("beta");
         
         return param;
     }

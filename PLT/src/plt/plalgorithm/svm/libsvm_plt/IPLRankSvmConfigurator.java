@@ -176,4 +176,5 @@ public interface IPLRankSvmConfigurator
     public String getKernelType();
     public double getGamma();
     public double getDegree();
+    public double getBeta();
 }

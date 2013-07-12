@@ -166,6 +166,8 @@ Library.*/
 
 package plt.report;
 
+import java.text.DecimalFormat;
+
 /**
  * PLT v1.0
  * @author Vincent E. Farrugia <vincent.e.farrugia@gmail.com>
@@ -184,7 +186,9 @@ public class ExpDatasetData
     {
         object_file = para_objFile;
         rank_file = para_rankFile;
-        accuracy_forSpecificModel = ((Math.round(para_specificAccuracy * 100) * 1000) / 1000);
-        accuracy_averageOverFolds = ((Math.round(para_averageAccuracy * 100) * 1000) / 1000);
+        
+        DecimalFormat df = new DecimalFormat("#.##");
+        accuracy_forSpecificModel = Double.parseDouble(df.format(para_specificAccuracy * 100));
+        accuracy_averageOverFolds = Double.parseDouble(df.format(para_averageAccuracy * 100));
     }
 }

@@ -191,26 +191,30 @@ public class PLRankSvmConfigurator implements IPLRankSvmConfigurator
     private ChoiceBox cbKernelType;
     private TextField txtGamma;
     private TextField txtDegree;
+    private TextField txtBeta;
     
     private Label lblGamma;
     private Label lblDegree;
+    private Label lblBeta;
     
 
     public PLRankSvmConfigurator()
     {
         ObservableList<String> availableKernelTypes = FXCollections.observableArrayList();
-        availableKernelTypes.addAll(new String[] {"Linear","Poly","RBF"});
+        availableKernelTypes.addAll(new String[] {"Linear","Polynomial","RBF","Sigmoid"});
         cbKernelType = new ChoiceBox<>(availableKernelTypes);
         cbKernelType.valueProperty().addListener(new KernelChangeListener());
         
         txtGamma = new AdvanceTextField("[0-9.]","1");
-        txtDegree = new AdvanceTextField("[0-9.]","2");
+        txtDegree = new TextField("2");
+        txtBeta = new TextField("0");
         
         
         float inputColWidth = 200;
         cbKernelType.setPrefWidth(inputColWidth);
         txtGamma.setPrefWidth(inputColWidth);
         txtDegree.setPrefWidth(inputColWidth);
+        txtBeta.setPrefWidth(inputColWidth);
     }
     
   
@@ -219,10 +223,11 @@ public class PLRankSvmConfigurator implements IPLRankSvmConfigurator
         
         Font headerFont = Font.font("BirchStd", FontWeight.BOLD, 15);
                 
-        Label lblRankSvmSectionHeader = new Label("Rank SVM");
+        Label lblRankSvmSectionHeader = new Label("Ranking SVM");
         Label lblKernelSelection = new Label("Kernel");
         lblGamma = new Label("Gamma:");
         lblDegree = new Label("Degree:");
+        lblBeta = new Label("Beta:");
         
         lblRankSvmSectionHeader.setFont(headerFont);
                
@@ -238,8 +243,11 @@ public class PLRankSvmConfigurator implements IPLRankSvmConfigurator
         innerGrid.add(cbKernelType, 1, 0);
         innerGrid.add(lblGamma,0,1);
         innerGrid.add(txtGamma,1,1);
-        innerGrid.add(lblDegree,0,2);
-        innerGrid.add(txtDegree,1,2);
+        innerGrid.add(lblBeta,0,2);
+        innerGrid.add(txtBeta,1,2);
+        innerGrid.add(lblDegree,0,3);
+        innerGrid.add(txtDegree,1,3);
+        
         
         
         BorderPane svmPane = new BorderPane();
@@ -254,7 +262,7 @@ public class PLRankSvmConfigurator implements IPLRankSvmConfigurator
         
         cbKernelType.getSelectionModel().select(0);
         
-        return new TitledPane[]{new TitledPane("Rank SVM", svmPane)};
+        return new TitledPane[]{new TitledPane("Ranking SVM", svmPane)};
     }
     
     @Override
@@ -275,6 +283,22 @@ public class PLRankSvmConfigurator implements IPLRankSvmConfigurator
         return parseDobuleOrFailWithZero(txtDegree);
     }
     
+    public String getDegreeTextboxContents()
+    {
+        return txtDegree.textProperty().get();
+    }
+    
+    @Override
+    public double getBeta()
+    {
+        return parseDobuleOrFailWithZero(txtBeta);
+    }
+    
+    public String getBetaTextboxContents()
+    {
+        return txtBeta.getText();
+    }
+    
     public boolean gammaRequired()
     {
         return txtGamma.isVisible();
@@ -283,6 +307,11 @@ public class PLRankSvmConfigurator implements IPLRankSvmConfigurator
     public boolean degreeRequired()
     {
         return txtDegree.isVisible();
+    }
+    
+    public boolean betaRequired()
+    {
+        return txtBeta.isVisible();
     }
     
     private static int parseIntegerOrFailWithZero(TextField t)
@@ -327,6 +356,8 @@ public class PLRankSvmConfigurator implements IPLRankSvmConfigurator
                          txtGamma.setVisible(false);
                          lblDegree.setVisible(false);
                          txtDegree.setVisible(false);
+                         lblBeta.setVisible(false);
+                         txtBeta.setVisible(false);
                          break;
 
                 // Poly Kernel.
@@ -334,6 +365,8 @@ public class PLRankSvmConfigurator implements IPLRankSvmConfigurator
                          txtGamma.setVisible(true);
                          lblDegree.setVisible(true);
                          txtDegree.setVisible(true);
+                         lblBeta.setVisible(true);
+                         txtBeta.setVisible(true);
                          break;
 
                 // RBF Kernel.
@@ -341,7 +374,18 @@ public class PLRankSvmConfigurator implements IPLRankSvmConfigurator
                          txtGamma.setVisible(true);
                          lblDegree.setVisible(false);
                          txtDegree.setVisible(false);
-                         break;                   
+                         lblBeta.setVisible(false);
+                         txtBeta.setVisible(false);
+                         break;
+                    
+                // Sigmoid Kernel.
+                case 3:  lblGamma.setVisible(true);
+                         txtGamma.setVisible(true);
+                         lblDegree.setVisible(false);
+                         txtDegree.setVisible(false);
+                         lblBeta.setVisible(true);
+                         txtBeta.setVisible(true);
+                         break;
             }
 
 

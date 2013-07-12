@@ -184,7 +184,7 @@ import plt.utils.TimeHelper;
  */
 public class SvmModelFileData extends ModelFileData implements Serializable
 {
-    final String algorithm = "Rank SVM";
+    final String algorithm = "Ranking SVM";
     
     ExpMetaData experiment_metadata;
     ExpDatasetData experiment_dataset;
@@ -270,9 +270,9 @@ public class SvmModelFileData extends ModelFileData implements Serializable
             {
                 return new LinearConfiguration();
             }
-            else if(kernelType.equals("Poly"))
+            else if(kernelType.equals("Polynomial"))
             {
-                return new PolyConfiguration(svmConfig.getGamma(), (int) svmConfig.getDegree());
+                return new PolyConfiguration(svmConfig.getGamma(), (int) svmConfig.getDegree(), svmConfig.getBeta());
             }
             else if(kernelType.equals("RBF"))
             {
@@ -302,12 +302,14 @@ public class SvmModelFileData extends ModelFileData implements Serializable
     {
         double gamma;
         int degree;
+        double beta;
         
-        public PolyConfiguration(double para_gamma, int para_degree)
+        public PolyConfiguration(double para_gamma, int para_degree, double para_beta)
         {
-            kernel_type = "Poly";
+            kernel_type = "Polynomial";
             gamma = para_gamma;
             degree = para_degree;
+            beta = para_beta;
         }
     }
 

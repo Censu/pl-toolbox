@@ -232,7 +232,7 @@ public class AlgorithmTab extends Tab {
         nestedBp.setPrefHeight(400);
         nestedBp.setPrefWidth(650);
         
-        final ModulePane algorithmMPane = new ModulePane("Algorithm", new ArrayList<String>(Arrays.asList("Evolving NN","Back propagation","Rank SVM")), new Pane(), "modulePane1",850);
+        final ModulePane algorithmMPane = new ModulePane("Algorithm", new ArrayList<String>(Arrays.asList("Evolving NN","Back propagation","Ranking SVM")), new Pane(), "modulePane1",850);
         final ModulePane validatorMPane = new ModulePane("Cross Validation", new ArrayList<String>(Arrays.asList("None", "K-Fold")),new Pane(),"modulePane2",850);
         
         
