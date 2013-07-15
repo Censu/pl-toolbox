@@ -189,6 +189,7 @@ public class PLRankSvm extends PLAlgorithm
 {
     private PLRankSvmConfigurator svmConfig;
     private RankSvmManager svmMang;
+    private HashMap<String,Object> userConfig;
     
     public PLRankSvm(TrainableDataSet para_tDataset, PLRankSvmConfigurator para_svmConfig)
     {
@@ -202,6 +203,7 @@ public class PLRankSvm extends PLAlgorithm
     {
         Logger.getLogger("plt.logger").log(Level.INFO, "run PLRankSvm");
 
+        svmMang.performSetup(this.getDataset(),this.getFeatureSelection(),userConfig);
         svmMang.runRankSVM();
         
         return createModelForRankSVM(svmMang,this.getDataset(),this.getFeatureSelection());
@@ -210,7 +212,7 @@ public class PLRankSvm extends PLAlgorithm
     @Override
     protected Model beforeRun()
     {
-        HashMap<String,Object> userConfig = new HashMap<>();
+        userConfig = new HashMap<>();
         userConfig.put("kernel", svmConfig.getKernelType());
         userConfig.put("gamma", svmConfig.getGamma());
         userConfig.put("degree", svmConfig.getDegree());
