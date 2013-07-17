@@ -225,6 +225,23 @@ public class Tab4Help extends ModalPopup {
                     + "in the pair. The parameter of the logistic function (which multiplies the output difference) "
                     + "is equal to 30 if the difference is positive and 5.0 otherwise. The fitness of a network is calculated "
                     + "as the average of this value over the complete set of training pairs.</li>\n" +
+            "<li>Support vector machine: this is a binary classifier that separates"
+                    + "the input samples linearly in a projected "
+                    + "space. The decision boundary of the classifier is given by a linear"
+                    + "combination of training samples "
+                    + "(called <i>support vectors</i>) in the projected "
+                    + "space. The projection in provided by the kernel function that the user "
+                    + "must select. "
+                    + "This tool contains the four most common kernel functions: "
+                    + "<ul><li>linear, a*b <\\li><li>polynomial, (gamma "
+                    + "a*b+beta)<sup>degree<\\sup><\\li><li>Radial Basis Function, e<sup>-gamma "
+                    + "||a*b||<\\sup><\\li><li>sigmoid, tanh(gamma a*b+beta)<\\li><\\ul>"
+                    + "The support vector and weights are selected to "
+                    + "satisfy a set of constrains derived from the input samples; in this "
+                    + "implementation,"
+                    + " the quadratic programmer solver contained in http://www.csie.ntu.edu.tw/~cjlin/libsvm/ is used."+                    
+                    
+                    
 "       <li>Support vector machine: this is a binary classifier that separates the iput put samples linearly in a projected " +
 "space. The decision boundary of the classifier is given by a linear combination of training samples "+
                     "(called <i>support vectors</i>) in the projected space. The projection in provided by the kernel function that the user must select. "
