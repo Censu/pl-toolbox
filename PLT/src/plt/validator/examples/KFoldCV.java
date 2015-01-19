@@ -236,13 +236,15 @@ public class KFoldCV extends Validator {
     
     protected static List<Set<Integer>> createGroups(TrainableDataSet t, int k) {
         List<Set<Integer>> atomicGroups = t.atomicGroups();
-        Collections.sort(atomicGroups, new Comparator<Set<Integer>>() {
+        
+        System.err.println("atomicGroups not sorted");
+       /* Collections.sort(atomicGroups, new Comparator<Set<Integer>>() {
 
             @Override
             public int compare(Set<Integer> t, Set<Integer> t1) {
                 return t.size() - t1.size();
             }
-        });
+        });*/
         
         List<Set<Integer>> groups = new ArrayList<>();
         int[] groupsSize = new int[k];        
