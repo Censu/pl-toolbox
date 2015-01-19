@@ -164,29 +164,35 @@ apply, that proxy's public statement of acceptance of any version is
 permanent authorization for you to choose that version for the
 Library.*/
 
-package plt.dataset.sushireader;
+package plt.dataset.datareader;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.text.ParseException;
 import java.util.*;
+
 import plt.dataset.DataSet;
 import plt.utils.Preference;
 
 /**
- * The SUSHI format Reader Data Set.
+ * Reader for a 2-file format. 
+ * Objects file contains the input samples (1 per row)
+ * The order file specify the partial orders between input samples (each row a sequence of IDs, from higher to lower)
  *
  * @author Institute of Digital Games, UoM Malta
  */
-public class SushiFormatDataSet implements DataSet {
+public class ObjectsOrderFormat implements DataSet {
 
-    private File idata;
-    private String idataSeparator;
+    private File objects;
+    private String objectsSeparator;
+    
     private File order;
     private String orderSeparator;
+    
     private int orderSkipLines;
     private int orderSkipColumns;
+    
     private String[][] features;
     private List<Preference> instnaces;
     private String[] featuresName;
@@ -194,7 +200,7 @@ public class SushiFormatDataSet implements DataSet {
     private boolean[] numeric;
     private List<Integer> atomicGroups;
     
-    private UramakiFileParseStatus localParseStatus;
+    private DataFileParseStatus localParseStatus;
     private HashMap<Integer, Integer> mapping;
     private HashMap<Integer, Integer> orderToActualObjID;
     
@@ -203,14 +209,14 @@ public class SushiFormatDataSet implements DataSet {
     
     private int numOfPreferences;
 
-    public SushiFormatDataSet() 
+    public ObjectsOrderFormat() 
     {
         this.isReady = false;
         
-        this.idata = null;
+        this.objects = null;
         this.order = null;
         
-        this.localParseStatus = new UramakiFileParseStatus();
+        this.localParseStatus = new DataFileParseStatus();
         this.mapping = new HashMap<>();
         this.orderToActualObjID = new HashMap<>();
         
@@ -222,8 +228,8 @@ public class SushiFormatDataSet implements DataSet {
     
     public void setIData(File idata, String idataSeparator)
     {
-        this.idata = idata;
-        this.idataSeparator = idataSeparator;
+        this.objects = idata;
+        this.objectsSeparator = idataSeparator;
     }
    
     
@@ -237,7 +243,7 @@ public class SushiFormatDataSet implements DataSet {
     
     public boolean containsIData()
     {
-        if(this.idata == null) { return false; } else { return true; }
+        if(this.objects == null) { return false; } else { return true; }
     }
     
     public boolean containsOrderData()
@@ -245,15 +251,36 @@ public class SushiFormatDataSet implements DataSet {
         if(this.order == null) { return false; } else { return true; }
     }
     
+    
+    
+    private DataFileParseStatus parsingObjectFileError(String message){
+    	
+        this.localParseStatus.error_iDataFile_reason = message;
+        this.localParseStatus.error_iDataFile = 1;
+        this.localParseStatus.overallParseResult = false;
+        this.isReady = false;
+    	return localParseStatus;
+    
+    }
+    
+    private DataFileParseStatus parsingOrderFileError(String message){
+    	
+        this.localParseStatus.error_orderDataFile_reason = message;
+        this.localParseStatus.error_orderDataFile = 1;
+        this.localParseStatus.overallParseResult = false;
+        this.isReady = false;
+    	return localParseStatus;
+    
+    }
 
-    public UramakiFileParseStatus parseIData()
+    public DataFileParseStatus parseIData()
     {
         this.isReady = false;
         
         Scanner scanner;
         try 
         {
-            scanner = new Scanner(new BufferedReader(new FileReader(idata)));
+            scanner = new Scanner(new BufferedReader(new FileReader(objects)));
             String platIndieLineSep = System.getProperty("line.separator");
             
             HashMap<Integer, String[]> hastable = new HashMap<>();
@@ -278,19 +305,21 @@ public class SushiFormatDataSet implements DataSet {
                 {
                     if(! line.startsWith("ID"))
                     {
-                        localParseStatus.error_iDataFile_reason = "No Object ID header and/or column.";
-                        throw new Exception();
+                    	scanner.close();
+                        return parsingObjectFileError("No Object ID header and/or column.");
+
                     }
                     else
                     {
-                        if(! line.contains(idataSeparator))
+                        if(! line.contains(objectsSeparator))
                         {
-                            localParseStatus.error_iDataFile_reason = "Items in the column header row are"+platIndieLineSep+"not split with the chosen separator.";
-                            throw new Exception();
+                        	scanner.close();
+                            return parsingObjectFileError("Items in the column header row are"+platIndieLineSep+"not split with the chosen separator.");
+
                         }
                         else
                         {
-                            String[] headerRes = line.split(idataSeparator);
+                            String[] headerRes = line.split(objectsSeparator);
                             this.featuresName = Arrays.copyOfRange(headerRes, 1, headerRes.length);
                             first = false;
                             continue;
@@ -302,25 +331,35 @@ public class SushiFormatDataSet implements DataSet {
 
                 if(!first)
                 {
-                    if(! line.contains(idataSeparator))
+                    if(! line.contains(objectsSeparator))
                     {
-                        localParseStatus.error_iDataFile_reason = "Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+" is not split with chosen separator";
-                        throw new Exception();
+                    	scanner.close();
+                        return parsingObjectFileError("Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+" is not split with chosen separator");
+
+
                     }
                     else
                     {
-                        String[] results = line.split(idataSeparator);
+                        String[] results = line.split(objectsSeparator);
                         String[] list = Arrays.copyOfRange(results, 1, results.length);
 
                         if(this.featuresName.length < list.length)
                         {
-                            localParseStatus.error_iDataFile_reason = "Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+"contains data for unspecified features.";
-                            throw new Exception();
+                        	
+                        	scanner.close();
+                            return parsingObjectFileError("Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+"contains data for unspecified features.");
+
+          	
+
                         }
                         else if(this.featuresName.length > list.length)
                         {
-                            localParseStatus.error_iDataFile_reason = "Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+"is missing data for certain features.";
-                            throw new Exception();
+                        	
+                        	
+                        	scanner.close();
+                            return parsingObjectFileError("Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+"is missing data for certain features.");
+                    	
+         
                         }
 
                         Integer indentifier = -1;
@@ -330,8 +369,10 @@ public class SushiFormatDataSet implements DataSet {
                         }
                         catch(Exception ex)
                         {
-                            localParseStatus.error_iDataFile_reason = "Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+"has a corrupt ID value.";
-                            throw new Exception();
+                        	
+                        	scanner.close();
+                            return parsingObjectFileError("Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+"has a corrupt ID value.");
+                    	
                         }
 
                         if (firstIndentifier == -1) {
@@ -388,11 +429,12 @@ public class SushiFormatDataSet implements DataSet {
             
             localParseStatus.error_iDataFile = 0;
         }
-        catch(Exception ex)
+        catch(FileNotFoundException ex)
         {
-            localParseStatus.error_iDataFile = 1;
-            ex.printStackTrace();
+            return parsingObjectFileError("File not found "+objects.toString()+".");
+
         }
+        
         
         if((localParseStatus.error_iDataFile == 0)
         &&(localParseStatus.error_orderDataFile == 0))
@@ -411,7 +453,7 @@ public class SushiFormatDataSet implements DataSet {
         return localParseStatus;
     }
     
-    public UramakiFileParseStatus parseOrderData()
+    public DataFileParseStatus parseOrderData()
     {
         Scanner scanner;
         try
@@ -446,8 +488,10 @@ public class SushiFormatDataSet implements DataSet {
                 
                 if(! line.contains(orderSeparator))
                 {
-                    localParseStatus.error_orderDataFile_reason = "Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+" is not split with chosen separator";
-                    throw new Exception();
+                	
+                	scanner.close();
+                	return parsingOrderFileError("Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+" is not split with chosen separator");
+
                 }
                 else
                 {
@@ -462,8 +506,8 @@ public class SushiFormatDataSet implements DataSet {
                             int parsedIdentifier = Integer.parseInt(parsedList[i]);
 
                             if( ! mapping.containsKey(parsedIdentifier)){
-                                localParseStatus.error_orderDataFile_reason = "Line "+srcFileLineNum+" refers to Object "+parsedIdentifier+""+platIndieLineSep+"which does not exist in the Object File";
-                                throw new Exception();
+                            	scanner.close();
+                            	return parsingOrderFileError("Line "+srcFileLineNum+" refers to Object "+parsedIdentifier+""+platIndieLineSep+"which does not exist in the Object File");
                             }
 
                             list[i] = mapping.get(parsedIdentifier);
@@ -486,10 +530,11 @@ public class SushiFormatDataSet implements DataSet {
             
             localParseStatus.error_orderDataFile = 0;
         } 
-        catch (Exception ex) 
+        catch (FileNotFoundException ex) 
         {
-            localParseStatus.error_orderDataFile = 1;
-            ex.printStackTrace();
+        	
+        	return parsingOrderFileError("File not found: "+order.toString()+".");
+
         }
         
         

@@ -164,13 +164,13 @@ apply, that proxy's public statement of acceptance of any version is
 permanent authorization for you to choose that version for the
 Library.*/
 
-package plt.dataset.sushireader;
+package plt.dataset.datareader;
 
 /**
  *
  * @author Institute of Digital Games, UoM Malta
  */
-public class UramakiFileParseStatus
+public class DataFileParseStatus
 {
     public boolean overallParseResult;
     public int error_iDataFile;             // -1 = unknown, 0 = no error, 1 = error.
@@ -179,7 +179,7 @@ public class UramakiFileParseStatus
     public String error_iDataFile_reason;
     public String error_orderDataFile_reason;
     
-    public UramakiFileParseStatus()
+    public DataFileParseStatus()
     {
         // Defaults
         
@@ -191,7 +191,7 @@ public class UramakiFileParseStatus
         error_orderDataFile_reason = "Invalid File Format";
     }
     
-    public UramakiFileParseStatus(boolean para_overallParseResult,
+    public DataFileParseStatus(boolean para_overallParseResult,
                                   int para_errorIDataFile,
                                   int para_errorOrderDataFile)
     {

@@ -169,13 +169,16 @@ package plt.gui;
 import java.awt.GridBagConstraints;
 import java.awt.MouseInfo;
 import java.awt.Point;
+
 import plt.gui.component.ModalPopup;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -187,7 +190,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -206,9 +208,7 @@ import javafx.stage.Popup;
 import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import plt.dataset.sushireader.UramakiFileParseStatus;
-
-
+import plt.dataset.datareader.DataFileParseStatus;
 import plt.gui.customcomponents.ButtonedTitledPane;
 import plt.gui.customcomponents.ContentNActionPane;
 import plt.help.HelpDataStore;
@@ -351,7 +351,7 @@ public class DataSetTab extends Tab {
         
         this.experiment.hasPerformedAParseStageProperty().addListener(new ChangeListener<Boolean>() {
             
-            UramakiFileParseStatus nwParseStatus;
+            DataFileParseStatus nwParseStatus;
             
             
             @Override

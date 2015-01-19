@@ -170,10 +170,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+
+import plt.dataset.datareader.ObjectsOrderFormat;
 import plt.dataset.preprocessing.MinMax;
 import plt.dataset.preprocessing.PreprocessingOperation;
 import plt.dataset.preprocessing.ZScore;
-import plt.dataset.sushireader.SushiFormatDataSet;
 import plt.featureselection.SelectedFeature;
 import plt.gui.Experiment;
 
@@ -257,7 +258,7 @@ public abstract class ModelFileData implements Serializable
                 double userGivenMin = castMinMax.getMin();
                 double userGivenMax = castMinMax.getMax();
                 
-                SushiFormatDataSet castDataSet = (SushiFormatDataSet) castMinMax.getDataSet();
+                ObjectsOrderFormat castDataSet = (ObjectsOrderFormat) castMinMax.getDataSet();
                 double featureMin = (double) castDataSet.getMinValForFeature(selF_ids[i]);
                 double featureMax = (double) castDataSet.getMaxValForFeature(selF_ids[i]);
                 

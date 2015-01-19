@@ -171,18 +171,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import plt.dataset.PreprocessedDataSet;
 import plt.dataset.TrainableDataSet;
+import plt.dataset.datareader.DataFileParseStatus;
+import plt.dataset.datareader.ObjectsOrderFormat;
 import plt.dataset.preprocessing.Ignoring;
 import plt.dataset.preprocessing.Nominal;
 import plt.dataset.preprocessing.Numeric;
 import plt.dataset.preprocessing.PreprocessingOperation;
-import plt.dataset.sushireader.SushiFormatDataSet;
-import plt.dataset.sushireader.UramakiFileParseStatus;
 import plt.featureselection.FeatureSelection;
 import plt.plalgorithm.PLAlgorithm;
 import plt.report.Report;
@@ -221,7 +222,7 @@ public class Experiment {
     private IntegerProperty orderSkipColumns;
     
     /*dataSet & status*/
-    private ObjectProperty<SushiFormatDataSet> dataSet;
+    private ObjectProperty<ObjectsOrderFormat> dataSet;
     private BooleanProperty isReadyToParseIdata;
     private BooleanProperty isReadyToParseOrder;
     private BooleanProperty hasPerformedAParseStage;
@@ -229,7 +230,7 @@ public class Experiment {
     private BooleanProperty isReadyToParse;
     private BooleanProperty isParsing;
     private BooleanProperty isReadyToUseDataSet;
-    private ObjectProperty<UramakiFileParseStatus> dataSetParseStatus;
+    private ObjectProperty<DataFileParseStatus> dataSetParseStatus;
     
     /* algorithm*/
     private ObjectProperty<PLAlgorithm> algorithm;
@@ -266,8 +267,8 @@ public class Experiment {
     public StringProperty orderSeparatorProperty() { return this.orderSeparator; }
     public IntegerProperty orderSkipLinesProperty() { return this.orderSkipLines; }
     public IntegerProperty orderSkipColumnsProperty() { return this.orderSkipColumns; }
-    public ObjectProperty<SushiFormatDataSet> dataSetProperty() { return this.dataSet; }
-    public ObjectProperty<UramakiFileParseStatus> dataSetParseStatusProperty() { return this.dataSetParseStatus; }
+    public ObjectProperty<ObjectsOrderFormat> dataSetProperty() { return this.dataSet; }
+    public ObjectProperty<DataFileParseStatus> dataSetParseStatusProperty() { return this.dataSetParseStatus; }
     public ObjectProperty<PreprocessingOperation[]> preprocessingOperationsProperty() { return this.preprocessingOperations; }
     public ObjectProperty<boolean[]> ignoredFeaturesProperty() { return this.ignoredFeatures ; }
     public ObjectProperty<PLAlgorithm> algorithmProperty() { return this.algorithm; }
@@ -311,7 +312,7 @@ public class Experiment {
         this.expCompleteTimestamp = new SimpleObjectProperty<>();
         
 
-        self.dataSet.set(new SushiFormatDataSet());
+        self.dataSet.set(new ObjectsOrderFormat());
         
         
         this.isReadyToParseIdata.addListener(new ChangeListener<Boolean>() {
@@ -321,10 +322,10 @@ public class Experiment {
             {
                 if(newValue)
                 {
-                    SushiFormatDataSet internalDataSet = self.dataSet.get();
+                    ObjectsOrderFormat internalDataSet = self.dataSet.get();
                     internalDataSet.setIData(self.idata.getValue(),self.idataSeparator.getValue());
                     
-                    UramakiFileParseStatus updatedParseStatus = internalDataSet.parseIData();
+                    DataFileParseStatus updatedParseStatus = internalDataSet.parseIData();
                     
                     if(internalDataSet.containsOrderData())
                     {
@@ -352,13 +353,13 @@ public class Experiment {
             {
                 if(newValue)
                 {
-                    SushiFormatDataSet internalDataSet = self.dataSet.get();
+                    ObjectsOrderFormat internalDataSet = self.dataSet.get();
                     internalDataSet.setOrderData(self.order.getValue(),
                                                  self.orderSeparator.getValue(),
                                                  self.orderSkipLines.getValue(),
                                                  self.orderSkipColumns.getValue());
                     
-                    UramakiFileParseStatus updatedParseStatus = internalDataSet.parseOrderData();
+                    DataFileParseStatus updatedParseStatus = internalDataSet.parseOrderData();
                     self.dataSetParseStatus.set(updatedParseStatus);
                     
                     self.dataSet.set(internalDataSet);

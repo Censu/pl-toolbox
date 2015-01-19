@@ -167,7 +167,7 @@ Library.*/
 package plt.dataset.preprocessing;
 
 import plt.dataset.DataSet;
-import plt.dataset.sushireader.SushiFormatDataSet;
+import plt.dataset.datareader.ObjectsOrderFormat;
 
 /**
  *
@@ -193,7 +193,7 @@ public class MinMax extends PreprocessingOperation{
     public double value(int object, int output) {
         Double value_actual = Double.parseDouble(this.getDataSet().getFeature(object, this.getFeature()));
         
-        SushiFormatDataSet castDataSet = (SushiFormatDataSet) this.getDataSet();
+        ObjectsOrderFormat castDataSet = (ObjectsOrderFormat) this.getDataSet();
         double minValForFeature = (double) castDataSet.getMinValForFeature(this.getFeature());
         double maxValForFeature = (double) castDataSet.getMaxValForFeature(this.getFeature());
         
