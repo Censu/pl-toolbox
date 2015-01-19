@@ -315,7 +315,9 @@ public class ExecutionProgress
         int numOfDeactivatedSubThreads = 0;
         for (Map.Entry pairs : threadActiveStatus.entrySet())
         {
-            if(pairs.getValue() == false)
+        	
+        	if(!threadActiveStatus.get(pairs))
+            //if(pairs.getValue() == false)
             {
                 numOfDeactivatedSubThreads++;
             }
