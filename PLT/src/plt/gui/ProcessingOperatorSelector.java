@@ -212,7 +212,7 @@ public class ProcessingOperatorSelector extends ModalPopup {
         vbox.setSpacing(10);
 
 
-        if (!experiment.dataSetProperty().get().isNumeric(item)) {
+        if (!experiment.getDataset().isNumeric(item)) {
             final RadioButton rb1 = new RadioButton("Nominal");
             rb1.setToggleGroup(toggle);
 
@@ -227,9 +227,9 @@ public class ProcessingOperatorSelector extends ModalPopup {
                     PreprocessingOperation[] pos = experiment.preprocessingOperationsProperty().get();
 
                     if (rb1.isSelected()) {
-                        pos[item] = new Nominal(experiment.dataSetProperty().get(), item);
+                        pos[item] = new Nominal(experiment.getDataset(), item);
                     } else {
-                        pos[item] = new Binary(experiment.dataSetProperty().get(), item, null);
+                        pos[item] = new Binary(experiment.getDataset(), item, null);
                     }
 
 
@@ -268,9 +268,9 @@ public class ProcessingOperatorSelector extends ModalPopup {
                     bp.setRight(null);
 
                     if (rb1.isSelected()) {
-                        pos[item] = new Numeric(experiment.dataSetProperty().get(), item);
+                        pos[item] = new Numeric(experiment.getDataset(), item);
                     } else if (rb2.isSelected()) {
-                        pos[item] = new MinMax(experiment.dataSetProperty().get(), item, 0, 1);
+                        pos[item] = new MinMax(experiment.getDataset(), item, 0, 1);
 
                         GridPane grid = new GridPane();
                         grid.setPadding(new Insets(20));
@@ -286,9 +286,9 @@ public class ProcessingOperatorSelector extends ModalPopup {
                         bp.setRight(grid);
 
                     } else if (rb3.isSelected()) {
-                        pos[item] = new NumericBinary(experiment.dataSetProperty().get(), item, null);
+                        pos[item] = new NumericBinary(experiment.getDataset(), item, null);
                     } else {
-                        pos[item] = new ZScore(experiment.dataSetProperty().get(), item);
+                        pos[item] = new ZScore(experiment.getDataset(), item);
                     }
 
                 }
@@ -332,7 +332,7 @@ public class ProcessingOperatorSelector extends ModalPopup {
                         min = 0;
                         max = 1;
                     }
-                    pos[item] = new MinMax(experiment.dataSetProperty().get(), item, min, max);
+                    pos[item] = new MinMax(experiment.getDataset(), item, min, max);
                 }
 
                 //button.setText(pos[item].toString());

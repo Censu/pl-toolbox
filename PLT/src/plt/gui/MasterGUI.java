@@ -168,6 +168,7 @@ package plt.gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -197,6 +198,8 @@ import plt.plalgorithm.svm.libsvm_plt.PLRankSvm;
 
 /**
  *
+ * GUI controller
+ *
  * @author Institute of Digital Games, UoM Malta
  */
 public class MasterGUI extends BorderPane
@@ -206,6 +209,7 @@ public class MasterGUI extends BorderPane
     
     TabPane tabPane;
     Text helpText;
+    final Button btnNext;
     
     final String DEFAULT_TOOLTIP_HELPTEXT = "HELP:      Mouse over the program's components for helpful tips.";
     
@@ -213,18 +217,10 @@ public class MasterGUI extends BorderPane
     {
         parentStage = stage;
      
-        
-        //JsonHelpExtractor ujextractor = new JsonHelpExtractor();
-        //HashMap<String,String> dataSetTab_tooltipHelp = ujextractor.extractToolTipFile("TestJson.json");
-        //HashMap<String, ExtensiveHelp> dataSetTab_extensiveHelp = ujextractor.extractExtensiveHelpFile("DataSetExtensiveHelp.json");
-        //final HelpDataStore dataSetTab_HelpStore = new HelpDataStore("DataSetTab",dataSetTab_tooltipHelp,dataSetTab_extensiveHelp);
-        
-        //ujextractor.writeExtensiveHelpFile("C:\\Users\\user\\Desktop\\ExtensiveSectionTest.json");
-        
         experiment = new Experiment();
 
         tabPane = new TabPane();
-        final Tab tab1 = new DataSetTab(parentStage, experiment);
+        final Tab tab1 = new DataSetTab(parentStage, experiment.getDataset());
         tab1.setText("Dataset");
 
         final Tab tab2 = new PreprocessingTab(parentStage, experiment);
@@ -272,16 +268,28 @@ public class MasterGUI extends BorderPane
         
         
         
-        final Button btnNext = new Button();
+        btnNext = new Button();
         btnNext.setPrefSize(200, 20);
-        Label lblNextBtn = new Label("NEXT");
+        Label lblNextBtn = new Label("Next");
         ImageView imgViewNextBtn = new ImageView(new Image(DataSetTab.class.getResourceAsStream("nxtButton.png")));
         BorderPane nextBtnInnerBPane = new BorderPane();
         nextBtnInnerBPane.setCenter(lblNextBtn);
         nextBtnInnerBPane.setRight(imgViewNextBtn);
         btnNext.setGraphic(nextBtnInnerBPane);
+        btnNext.disableProperty().setValue(true);
         
-        btnNext.disableProperty().bind(this.experiment.isReadyToUseDataSetProperty().not());
+        
+        experiment.getDataset().addDataLoaderListener(new ChangeListener<Boolean>(){
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean arg1, Boolean arg2) {
+				if(arg2){
+					enableTabs();
+				}
+				
+			}});
+        
         
         tabPane.selectionModelProperty();
         
@@ -309,7 +317,7 @@ public class MasterGUI extends BorderPane
                     }
 
 
-                    if(numOfIgnoredFeatures == experiment.dataSetProperty().get().getNumberOfFeatures())
+                    if(numOfIgnoredFeatures == experiment.getDataset().getNumberOfFeatures())
                     {
                         // You must include at least one feature.
 
@@ -324,7 +332,7 @@ public class MasterGUI extends BorderPane
                         {
                             NBest castNBest = (NBest) experiment.featureSelectionProperty().get();
 
-                            int numOfUserIncludedFeatures = (experiment.dataSetProperty().get().getNumberOfFeatures() - numOfIgnoredFeatures);
+                            int numOfUserIncludedFeatures = (experiment.getDataset().getNumberOfFeatures() - numOfIgnoredFeatures);
 
                             if(castNBest.getN() > numOfUserIncludedFeatures)
                             {
@@ -565,11 +573,13 @@ public class MasterGUI extends BorderPane
         
     }
     
-    public void enableTabs(ArrayList<Integer> para_tabsToEnable)
+    private void enableTabs()
     {
-        for(int i=0; i<para_tabsToEnable.size(); i++)
+    	
+    	btnNext.disableProperty().setValue(false);
+        for(int i=1; i<4; i++)
         {
-            tabPane.getTabs().get(para_tabsToEnable.get(i)).setDisable(false);
+            tabPane.getTabs().get(i).setDisable(false);
         }
     }
     

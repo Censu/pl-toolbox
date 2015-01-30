@@ -184,6 +184,7 @@ public class ExpDatasetData
     {
         object_file = para_objFile;
         rank_file = para_rankFile;
+        System.err.println("rank_file is empty while object_file cotnains detailed parsing information produced by ObjectsOrderFormat.getParsingDetails()");
         accuracy_forSpecificModel = ((Math.round(para_specificAccuracy * 100) * 1000) / 1000);
         accuracy_averageOverFolds = ((Math.round(para_averageAccuracy * 100) * 1000) / 1000);
     }

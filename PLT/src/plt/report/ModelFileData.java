@@ -170,10 +170,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+
+import plt.dataset.datareader.ObjectsOrderFormat;
 import plt.dataset.preprocessing.MinMax;
 import plt.dataset.preprocessing.PreprocessingOperation;
 import plt.dataset.preprocessing.ZScore;
-import plt.dataset.sushireader.SushiFormatDataSet;
 import plt.featureselection.SelectedFeature;
 import plt.gui.Experiment;
 
@@ -204,7 +205,7 @@ public abstract class ModelFileData implements Serializable
                 if(! igArr[i])
                 {
                     tmpFIDList.add(i);
-                    tmpFNameList.add(para_exp.dataSetProperty().get().getFeatureName(i));
+                    tmpFNameList.add(para_exp.getDataset().getFeatureName(i));
                 }
             }
             
@@ -222,7 +223,7 @@ public abstract class ModelFileData implements Serializable
             featureNames = new String[selF_ids.length];
             for(int i=0; i<selF_ids.length; i++)
             {
-                featureNames[i] = para_exp.dataSetProperty().get().getFeatureName(selF_ids[i]);
+                featureNames[i] = para_exp.getDataset().getFeatureName(selF_ids[i]);
             }
           
         }
@@ -257,7 +258,7 @@ public abstract class ModelFileData implements Serializable
                 double userGivenMin = castMinMax.getMin();
                 double userGivenMax = castMinMax.getMax();
                 
-                SushiFormatDataSet castDataSet = (SushiFormatDataSet) castMinMax.getDataSet();
+                ObjectsOrderFormat castDataSet = (ObjectsOrderFormat) castMinMax.getDataSet();
                 double featureMin = (double) castDataSet.getMinValForFeature(selF_ids[i]);
                 double featureMax = (double) castDataSet.getMaxValForFeature(selF_ids[i]);
                 

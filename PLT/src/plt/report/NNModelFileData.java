@@ -213,8 +213,8 @@ public class NNModelFileData extends ModelFileData implements Serializable
                                               para_exp.expStartTimestampProperty().get(),
                                               para_exp.expCompleteTimestampProperty().get());
         
-        experiment_dataset = new ExpDatasetData(para_exp.idataProperty().get().getAbsolutePath(),
-                                                para_exp.orderProperty().get().getAbsolutePath(),
+        experiment_dataset = new ExpDatasetData(para_exp.getDataset().getParsingDetails(),
+                                               "",
                                                 para_accResult_specificModel,
                                                 para_accResult_averageOverFolds);
         

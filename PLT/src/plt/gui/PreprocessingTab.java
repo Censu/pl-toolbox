@@ -166,7 +166,6 @@ Library.*/
 
 package plt.gui;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -182,7 +181,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Group;
+
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.ColorAdjust;
@@ -240,15 +239,15 @@ public class PreprocessingTab extends Tab {
         innerPane.setHgap(100);
         
         
-        final VBox loading = this.setupLoadingVbox();
+     //   final VBox loading = this.setupLoadingVbox();
         final PreprocessingTab self = this;
         
         final FeaturesPreview features = new FeaturesPreview();
 
         
 
-        innerPane.setVisible(false);
-        loading.setVisible(true);
+      //  innerPane.setVisible(false);
+     //   loading.setVisible(true);
         
         
         
@@ -463,7 +462,7 @@ public class PreprocessingTab extends Tab {
             @Override
             public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean newValue) 
             {
-                int numOfFeatures = experiment.dataSetProperty().get().getNumberOfFeatures();
+                int numOfFeatures = experiment.getDataset().getNumberOfFeatures();
                 for(int i=0; i<numOfFeatures; i++)
                 {
                     // Let the individual check boxes handle logic changes.                    
@@ -496,7 +495,7 @@ public class PreprocessingTab extends Tab {
                     @Override
                     public void handle(Event t)
                     {
-                        int numOfFeatures = experiment.dataSetProperty().get().getNumberOfFeatures();
+                        int numOfFeatures = experiment.getDataset().getNumberOfFeatures();
                         
                         for(int i=0; i<numOfFeatures; i++)
                         {
@@ -584,17 +583,8 @@ public class PreprocessingTab extends Tab {
             
         });
         
-        if(loading.isVisible())
-        {
-            //tmpVBox.getChildren().addAll(lblTabHeader,loading);
-            sPane.setContent(loading);
-        }
-        else
-        {
-            //tmpVBox.getChildren().addAll(lblTabHeader,new Group(wPane));
-            sPane.setContent(innerPane);
-        }
-        
+
+        sPane.setContent(innerPane);
        
         tmpVBox.getChildren().addAll(lblTabHeader,sPane);
         
@@ -604,10 +594,13 @@ public class PreprocessingTab extends Tab {
         
         
         
+        System.out.println("Removed listeners related to the tableview in preprocessing");
         
         
         
-        this.experiment.isParsingProperty().addListener(new ChangeListener<Boolean>() {
+        
+        
+        /*this.experiment.isParsingProperty().addListener(new ChangeListener<Boolean>() {
 
             @Override
             public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean newValue) {
@@ -626,9 +619,9 @@ public class PreprocessingTab extends Tab {
                     
                 }
             }
-        });
+        });*/
 
-        this.experiment.isReadyToUseDataSetProperty().addListener(new ChangeListener<Boolean>() {
+       /* this.experiment.isReadyToUseDataSetProperty().addListener(new ChangeListener<Boolean>() {
 
             @Override
             public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean newValue) {
@@ -650,7 +643,7 @@ public class PreprocessingTab extends Tab {
                     }
                 }
             }
-        });
+        });*/
         
         featureList_tView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<FeatureListTableRowData>(){
 
@@ -671,11 +664,11 @@ public class PreprocessingTab extends Tab {
     {
         ObservableList<FeatureListTableRowData> dataSet =  FXCollections.observableArrayList();
         
-        int numOfFeatures = experiment.dataSetProperty().get().getNumberOfFeatures();
+        int numOfFeatures = experiment.getDataset().getNumberOfFeatures();
         
         for(int i=0; i<numOfFeatures; i++)
         {
-            String featureName = experiment.dataSetProperty().get().getFeatureName(i);
+            String featureName = experiment.getDataset().getFeatureName(i);
             
             PreprocessingOperation po = experiment.preprocessingOperationsProperty().get()[i];
             

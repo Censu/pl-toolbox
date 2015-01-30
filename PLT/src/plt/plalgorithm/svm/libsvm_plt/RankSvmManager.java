@@ -169,8 +169,9 @@ package plt.plalgorithm.svm.libsvm_plt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import plt.dataset.TrainableDataSet;
-import plt.dataset.sushireader.SushiFormatDataSet;
+import plt.dataset.datareader.ObjectsOrderFormat;
 import plt.featureselection.SelectedFeature;
 import plt.plalgorithm.svm.libsvm.svm;
 import plt.plalgorithm.svm.libsvm.svm_model;
@@ -384,7 +385,7 @@ public class RankSvmManager implements IRankSvm
     
     private Object[] createPLObjects(TrainableDataSet para_tDataSet, SelectedFeature para_fSelected)
     {
-        SushiFormatDataSet castDSet = (SushiFormatDataSet) para_tDataSet.getDataSet();
+        ObjectsOrderFormat castDSet = (ObjectsOrderFormat) para_tDataSet.getDataSet();
         
         int numObjects = para_tDataSet.getNumberOfObjects();
         
