@@ -166,23 +166,18 @@ Library.*/
 
 package plt.gui;
 
-import java.io.File;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
+import plt.dataset.DataParser;
+import plt.dataset.DataSet;
 import plt.dataset.PreprocessedDataSet;
 import plt.dataset.TrainableDataSet;
-import plt.dataset.datareader.DataFileParseStatus;
 import plt.dataset.datareader.ObjectsOrderFormat;
 import plt.dataset.preprocessing.Ignoring;
-import plt.dataset.preprocessing.Nominal;
-import plt.dataset.preprocessing.Numeric;
 import plt.dataset.preprocessing.PreprocessingOperation;
 import plt.featureselection.FeatureSelection;
 import plt.plalgorithm.PLAlgorithm;
@@ -212,25 +207,11 @@ public class Experiment {
         public SimpleBooleanProperty statusProperty() { return this.status; }
 
     }
-
-    /*input*/
-    private ObjectProperty<File> idata;
-    private ObjectProperty<File> order;
-    private StringProperty idataSeparator;
-    private StringProperty orderSeparator;
-    private IntegerProperty orderSkipLines;
-    private IntegerProperty orderSkipColumns;
     
     /*dataSet & status*/
-    private ObjectProperty<ObjectsOrderFormat> dataSet;
-    private BooleanProperty isReadyToParseIdata;
-    private BooleanProperty isReadyToParseOrder;
-    private BooleanProperty hasPerformedAParseStage;
-    private BooleanProperty hasParsedBothIdataNOrder;
-    private BooleanProperty isReadyToParse;
-    private BooleanProperty isParsing;
-    private BooleanProperty isReadyToUseDataSet;
-    private ObjectProperty<DataFileParseStatus> dataSetParseStatus;
+    private ObjectsOrderFormat dataSet;
+//    private ObjectProperty<ObjectsOrderFormat> dataSet;
+
     
     /* algorithm*/
     private ObjectProperty<PLAlgorithm> algorithm;
@@ -254,21 +235,10 @@ public class Experiment {
     private ObjectProperty<Calendar> expCompleteTimestamp;
     
     /* property*/
-    public BooleanProperty isReadyToParseIdataProperty() { return this.isReadyToParseIdata; }
-    public BooleanProperty isReadyToParseOrderProperty() { return this.isReadyToParseOrder; }
-    public BooleanProperty hasPerformedAParseStageProperty() { return this.hasPerformedAParseStage; }
-    public BooleanProperty hasParsedBothIDataNOrderProperty() { return this.hasParsedBothIdataNOrder; }
-    public BooleanProperty isReadyToUseDataSetProperty() { return this.isReadyToUseDataSet; }
-    public BooleanProperty isParsingProperty() { return this.isParsing; }
-    public BooleanProperty isReadyToParseroperty() { return this.isReadyToParse; }
-    public ObjectProperty<File> idataProperty() { return this.idata; }
-    public ObjectProperty<File> orderProperty() { return this.order; }
-    public StringProperty idataSeparatorProperty() { return this.idataSeparator; }
-    public StringProperty orderSeparatorProperty() { return this.orderSeparator; }
-    public IntegerProperty orderSkipLinesProperty() { return this.orderSkipLines; }
-    public IntegerProperty orderSkipColumnsProperty() { return this.orderSkipColumns; }
-    public ObjectProperty<ObjectsOrderFormat> dataSetProperty() { return this.dataSet; }
-    public ObjectProperty<DataFileParseStatus> dataSetParseStatusProperty() { return this.dataSetParseStatus; }
+
+    //public ObjectProperty<ObjectsOrderFormat> dataSetProperty() { return this.dataSet; }
+    public ObjectsOrderFormat getDataset() { return this.dataSet; }
+
     public ObjectProperty<PreprocessingOperation[]> preprocessingOperationsProperty() { return this.preprocessingOperations; }
     public ObjectProperty<boolean[]> ignoredFeaturesProperty() { return this.ignoredFeatures ; }
     public ObjectProperty<PLAlgorithm> algorithmProperty() { return this.algorithm; }
@@ -284,21 +254,13 @@ public class Experiment {
     public Experiment() {
         
         final Experiment self = this;
-        this.isReadyToParseIdata = new SimpleBooleanProperty(false);
-        this.isReadyToParseOrder = new SimpleBooleanProperty(false);
-        this.hasPerformedAParseStage = new SimpleBooleanProperty(false);
-        this.hasParsedBothIdataNOrder = new SimpleBooleanProperty(false);
-        this.isParsing = new SimpleBooleanProperty(false);
-        this.isReadyToParse = new SimpleBooleanProperty(true);
-        this.isReadyToUseDataSet = new SimpleBooleanProperty(false);
-        this.orderSeparator = new SimpleStringProperty("");
-        this.idataSeparator = new SimpleStringProperty("");
-        this.orderSkipLines = new SimpleIntegerProperty(0);
-        this.orderSkipColumns = new SimpleIntegerProperty(0);
-        this.idata = new SimpleObjectProperty<>();
-        this.order = new SimpleObjectProperty<>();
-        this.dataSet = new SimpleObjectProperty<>();
-        this.dataSetParseStatus = new SimpleObjectProperty<>();
+        
+
+        
+       // this.dataSet = new SimpleObjectProperty<>();
+        //self.dataSet.set(new ObjectsOrderFormat());
+        this.dataSet = new ObjectsOrderFormat();
+        
         this.preprocessingOperations = new SimpleObjectProperty<>();
         this.ignoredFeatures = new SimpleObjectProperty<>();
         this.algorithm = new SimpleObjectProperty<>();
@@ -312,10 +274,10 @@ public class Experiment {
         this.expCompleteTimestamp = new SimpleObjectProperty<>();
         
 
-        self.dataSet.set(new ObjectsOrderFormat());
         
         
-        this.isReadyToParseIdata.addListener(new ChangeListener<Boolean>() {
+        System.err.println("Removed parsing listeners from here");
+        /*this.isReadyToParseIdata.addListener(new ChangeListener<Boolean>() {
                 
             @Override
             public void changed(ObservableValue<? extends Boolean> ov, Boolean oldValue, Boolean newValue)
@@ -433,10 +395,17 @@ public class Experiment {
                }
             }
         });
+        */
    }
+    
+  
+
+    
+  
+    
+    
    
    public Report start() {
-
        // Record Experiment Start Timestamp
        this.expStartTimestamp.setValue(Calendar.getInstance());
        Logger.getLogger("plt.logger").log(Level.INFO, "Execution Start: "+ TimeHelper.createTimestampStr(this.expStartTimestamp.get()));
@@ -450,11 +419,11 @@ public class Experiment {
        
        for (int i=0; i < ignored.length ; i++)
            if (ignored[i]) 
-               ops[i] = new Ignoring(this.dataSetProperty().get(), i);
+               ops[i] = new Ignoring(this.dataSet, i);
            else
                ops[i] = this.preprocessingOperations.get()[i];
 
-       TrainableDataSet t = new PreprocessedDataSet(this.dataSet.get(), ops);
+       TrainableDataSet t = new PreprocessedDataSet(this.dataSet, ops);
        
        
        this.algorithm.get().setDataSet(t);
@@ -518,5 +487,7 @@ public class Experiment {
        
        return retRep;
    }
+   
+
     
 }

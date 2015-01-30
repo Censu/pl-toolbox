@@ -240,8 +240,8 @@ public class FeaturesPreview  {
     void refreshTable(final Experiment experiment, final int value, final int page) {
         final int limit = 10;
         Label label = new Label();
-        final int numberOfObjects = experiment.dataSetProperty().getValue().getNumberOfObjects();
-        String name = experiment.dataSetProperty().getValue().getFeatureName(value);
+        final int numberOfObjects = experiment.getDataset().getNumberOfObjects();
+        String name = experiment.getDataset().getFeatureName(value);
         
         
         int idOfLastObservableRow = (page*limit) + (limit-1);
@@ -310,7 +310,7 @@ public class FeaturesPreview  {
                 PreprocessingOperation preprocessingOperation = experiment.preprocessingOperationsProperty().get()[value];
                 ObservableList<RowModel> data = FXCollections.observableArrayList();
 
-                int rows = experiment.dataSetProperty().get().getNumberOfObjects();
+                int rows = experiment.getDataset().getNumberOfObjects();
 
                 for (int i=page*limit; i< (page+1)*limit; i++) {
                     if (i<rows)
@@ -374,7 +374,7 @@ public class FeaturesPreview  {
                         }
                         else
                         { 
-                            String featureName = experiment.dataSetProperty().getValue().getFeatureName(preprocessingOperation.getFeature());
+                            String featureName = experiment.getDataset().getFeatureName(preprocessingOperation.getFeature());
                             featureName = capitaliseFirstLetter(featureName);
                             columnName = featureName;
                         }

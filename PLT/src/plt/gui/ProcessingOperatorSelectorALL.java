@@ -234,15 +234,15 @@ public class ProcessingOperatorSelectorALL extends ModalPopup {
             {
                 PreprocessingOperation[] pos = experiment.preprocessingOperationsProperty().get();
 
-                int numOfFeatures = experiment.dataSetProperty().get().getNumberOfFeatures();
+                int numOfFeatures = experiment.getDataset().getNumberOfFeatures();
                 
                 if (nonNPane_rb1.isSelected()) 
                 {    
                     for(int i=0; i<numOfFeatures; i++)
                     {
-                        if(! experiment.dataSetProperty().get().isNumeric(i) )
+                        if(! experiment.getDataset().isNumeric(i) )
                         {
-                            pos[i] = new Nominal(experiment.dataSetProperty().get(), i);
+                            pos[i] = new Nominal(experiment.getDataset(), i);
                         }
                     }
                 } 
@@ -250,9 +250,9 @@ public class ProcessingOperatorSelectorALL extends ModalPopup {
                 {
                     for(int i=0; i<numOfFeatures; i++)
                     {
-                        if(! experiment.dataSetProperty().get().isNumeric(i) )
+                        if(! experiment.getDataset().isNumeric(i) )
                         {
-                            pos[i] = new Binary(experiment.dataSetProperty().get(), i, null);
+                            pos[i] = new Binary(experiment.getDataset(), i, null);
                         }
                     }
                 }
@@ -296,7 +296,7 @@ public class ProcessingOperatorSelectorALL extends ModalPopup {
 
                 PreprocessingOperation[] pos = experiment.preprocessingOperationsProperty().get();
 
-                int numOfFeatures = experiment.dataSetProperty().get().getNumberOfFeatures();
+                int numOfFeatures = experiment.getDataset().getNumberOfFeatures();
                 
                 numericDataPane.setRight(null);
                 
@@ -305,9 +305,9 @@ public class ProcessingOperatorSelectorALL extends ModalPopup {
                 {
                     for(int i=0; i<numOfFeatures; i++)
                     {
-                        if( experiment.dataSetProperty().get().isNumeric(i) )
+                        if( experiment.getDataset().isNumeric(i) )
                         {
-                            pos[i] = new Numeric(experiment.dataSetProperty().get(), i);
+                            pos[i] = new Numeric(experiment.getDataset(), i);
                         }
                     }
                 } 
@@ -315,9 +315,9 @@ public class ProcessingOperatorSelectorALL extends ModalPopup {
                 {
                     for(int i=0; i<numOfFeatures; i++)
                     {
-                        if( experiment.dataSetProperty().get().isNumeric(i) )
+                        if( experiment.getDataset().isNumeric(i) )
                         {
-                            pos[i] = new MinMax(experiment.dataSetProperty().get(), i, 0, 1);
+                            pos[i] = new MinMax(experiment.getDataset(), i, 0, 1);
                         }
                     }
 
@@ -339,9 +339,9 @@ public class ProcessingOperatorSelectorALL extends ModalPopup {
                 {
                     for(int i=0; i<numOfFeatures; i++)
                     {
-                        if( experiment.dataSetProperty().get().isNumeric(i) )
+                        if( experiment.getDataset().isNumeric(i) )
                         {
-                            pos[i] = new NumericBinary(experiment.dataSetProperty().get(), i, null);
+                            pos[i] = new NumericBinary(experiment.getDataset(), i, null);
                         }
                     }
                 } 
@@ -349,9 +349,9 @@ public class ProcessingOperatorSelectorALL extends ModalPopup {
                 {
                     for(int i=0; i<numOfFeatures; i++)
                     {
-                        if( experiment.dataSetProperty().get().isNumeric(i) )
+                        if( experiment.getDataset().isNumeric(i) )
                         {
-                            pos[i] = new ZScore(experiment.dataSetProperty().get(), i);
+                            pos[i] = new ZScore(experiment.getDataset(), i);
                         }
                     }
                 }
@@ -376,7 +376,7 @@ public class ProcessingOperatorSelectorALL extends ModalPopup {
             public void handle(Event t) {
                 PreprocessingOperation[] pos = experiment.preprocessingOperationsProperty().get();
 
-                int numOfFeatures = experiment.dataSetProperty().get().getNumberOfFeatures();
+                int numOfFeatures = experiment.getDataset().getNumberOfFeatures();
                 
                 for(int i=0; i<numOfFeatures; i++)
                 {
@@ -394,7 +394,7 @@ public class ProcessingOperatorSelectorALL extends ModalPopup {
                             min = 0;
                             max = 1;
                         }
-                        pos[i] = new MinMax(experiment.dataSetProperty().get(), i, min, max);
+                        pos[i] = new MinMax(experiment.getDataset(), i, min, max);
                     }
 
                     //button.setText(pos[item].toString());

@@ -172,6 +172,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import plt.dataset.DataParser;
 import plt.dataset.DataSet;
 import plt.utils.Preference;
 
@@ -184,23 +188,16 @@ import plt.utils.Preference;
  */
 public class ObjectsOrderFormat implements DataSet {
 
-    private File objects;
-    private String objectsSeparator;
     
-    private File order;
-    private String orderSeparator;
+    private String[][] features;//Objects
+    private List<Preference> instances;//orders
     
-    private int orderSkipLines;
-    private int orderSkipColumns;
-    
-    private String[][] features;
-    private List<Preference> instnaces;
     private String[] featuresName;
     private boolean isReady;
+    
     private boolean[] numeric;
     private List<Integer> atomicGroups;
     
-    private DataFileParseStatus localParseStatus;
     private HashMap<Integer, Integer> mapping;
     private HashMap<Integer, Integer> orderToActualObjID;
     
@@ -213,346 +210,239 @@ public class ObjectsOrderFormat implements DataSet {
     {
         this.isReady = false;
         
-        this.objects = null;
+        /*this.objects = null;
         this.order = null;
         
-        this.localParseStatus = new DataFileParseStatus();
-        this.mapping = new HashMap<>();
-        this.orderToActualObjID = new HashMap<>();
+        this.localParseStatusObjects = new DataFileParseStatus();
+        this.localParseStatusOrders = new DataFileParseStatus();*/
+        
+        
+
         
         featureToMinValMap = new HashMap<>();
         featureToMaxValMap = new HashMap<>();
         
         numOfPreferences = 0;
-    }
-    
-    public void setIData(File idata, String idataSeparator)
-    {
-        this.objects = idata;
-        this.objectsSeparator = idataSeparator;
-    }
-   
-    
-    public void setOrderData(File order, String orderSeparator, int orderSkipLines, int orderSkipColumns)
-    {
-        this.order = order;
-        this.orderSeparator = orderSeparator;
-        this.orderSkipLines = orderSkipLines;
-        this.orderSkipColumns = orderSkipColumns;
-    }
-    
-    public boolean containsIData()
-    {
-        if(this.objects == null) { return false; } else { return true; }
-    }
-    
-    public boolean containsOrderData()
-    {
-        if(this.order == null) { return false; } else { return true; }
-    }
-    
-    
-    
-    private DataFileParseStatus parsingObjectFileError(String message){
-    	
-        this.localParseStatus.error_iDataFile_reason = message;
-        this.localParseStatus.error_iDataFile = 1;
-        this.localParseStatus.overallParseResult = false;
-        this.isReady = false;
-    	return localParseStatus;
-    
-    }
-    
-    private DataFileParseStatus parsingOrderFileError(String message){
-    	
-        this.localParseStatus.error_orderDataFile_reason = message;
-        this.localParseStatus.error_orderDataFile = 1;
-        this.localParseStatus.overallParseResult = false;
-        this.isReady = false;
-    	return localParseStatus;
-    
-    }
-
-    public DataFileParseStatus parseIData()
-    {
-        this.isReady = false;
         
-        Scanner scanner;
-        try 
-        {
-            scanner = new Scanner(new BufferedReader(new FileReader(objects)));
-            String platIndieLineSep = System.getProperty("line.separator");
-            
-            HashMap<Integer, String[]> hastable = new HashMap<>();
-            orderToActualObjID.clear();
-
-            boolean first = true;
-            Integer firstIndentifier = -1;
-            
-            int srcFileLineNum = -1;
-            int entryNum = 0;
-
-            while (scanner.hasNextLine()) {
-
-                srcFileLineNum++;
-                
-                String line = scanner.nextLine();
-                if (line.startsWith("%") || line.isEmpty()) {
-                    continue;
-                }
-
-                if(first)
-                {
-                    if(! line.startsWith("ID"))
-                    {
-                    	scanner.close();
-                        return parsingObjectFileError("No Object ID header and/or column.");
-
-                    }
-                    else
-                    {
-                        if(! line.contains(objectsSeparator))
-                        {
-                        	scanner.close();
-                            return parsingObjectFileError("Items in the column header row are"+platIndieLineSep+"not split with the chosen separator.");
-
-                        }
-                        else
-                        {
-                            String[] headerRes = line.split(objectsSeparator);
-                            this.featuresName = Arrays.copyOfRange(headerRes, 1, headerRes.length);
-                            first = false;
-                            continue;
-                        }
-                    }
-                    
-                }
-
-
-                if(!first)
-                {
-                    if(! line.contains(objectsSeparator))
-                    {
-                    	scanner.close();
-                        return parsingObjectFileError("Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+" is not split with chosen separator");
-
-
-                    }
-                    else
-                    {
-                        String[] results = line.split(objectsSeparator);
-                        String[] list = Arrays.copyOfRange(results, 1, results.length);
-
-                        if(this.featuresName.length < list.length)
-                        {
-                        	
-                        	scanner.close();
-                            return parsingObjectFileError("Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+"contains data for unspecified features.");
-
-          	
-
-                        }
-                        else if(this.featuresName.length > list.length)
-                        {
-                        	
-                        	
-                        	scanner.close();
-                            return parsingObjectFileError("Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+"is missing data for certain features.");
-                    	
-         
-                        }
-
-                        Integer indentifier = -1;
-                        try
-                        {
-                            indentifier = Integer.parseInt(results[0]);
-                        }
-                        catch(Exception ex)
-                        {
-                        	
-                        	scanner.close();
-                            return parsingObjectFileError("Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+"has a corrupt ID value.");
-                    	
-                        }
-
-                        if (firstIndentifier == -1) {
-                            firstIndentifier = indentifier;
-                        }
-                        hastable.put(indentifier, list);
-                        orderToActualObjID.put(entryNum, indentifier);
-                        
-                        /*System.out.println("Line number: "+(srcFileLineNum+1));
-
-                        if(indentifier == 2647)
-                        {
-                            System.out.println("Debug");
-                            String[] tmpL = hastable.get(2647);
-                            System.out.println("EDebug");
-                        }*/
-                        
-                        
-                        
-                        entryNum++;
-                    }
-                }
-            }
-            scanner.close();
-
-
-            features = new String[hastable.size()][hastable.get(firstIndentifier).length];
-            
-
-            int key = 0;
-            List<Integer> keySet = new ArrayList<>(hastable.keySet());
-            java.util.Collections.sort(keySet);
-
-            for (Integer identifier : keySet) {
-                features[key] = hastable.get(identifier);
-                //mapping.put(key, identifier);
-                mapping.put(identifier, key);
-                                
-                key++;
-            }
-            
-            
-            this.numeric = new boolean[this.features.length];
-            for (int i = 0; i < this.features[0].length; i++) {
-                this.numeric[i] = true;
+        dataFilesValid = new SimpleBooleanProperty(false);
+        
+    }
+    
+    
+    
+    public void addDataLoaderListener(ChangeListener<Boolean> listener){
+    	dataFilesValid.addListener(listener);
+    }
+    
+    private BooleanProperty dataFilesValid;
+    
+    private String parsingObjectsInformation = "";
+    private String parsingOrderInformation = "";
+    
+    
+    
+    public String getParsingDetails(){
+    	if(parsingOrderInformation.length()==0)
+    		return parsingObjectsInformation;
+    	else
+    		return parsingObjectsInformation+"\n"+parsingOrderInformation;
+    }
+    
+    
+    public String setObjectData(DataParser parser){
+    	
+    	parsingObjectsInformation = parser.getDetails();
+    	
+    	if(parser.getData().size()==0){
+    		dataFilesValid.setValue(false);
+    		return "No objects found in file.";
+    	}
+    	
+    	if(parser.getFeatureNames().size()==1){
+    		dataFilesValid.setValue(false);
+    		return "Objects only contain ID.";
+    	}
+    	
+    	
+    	features = new String[parser.getData().size()][parser.getFeatureNames().size()-1];//ID is removed
+    	numeric = new boolean[parser.getFeatureNames().size()-1];
+    	
+    	//delete preferences
+    	instances = new ArrayList<Preference>();
+    	atomicGroups = new ArrayList<Integer>();
+    	
+    	for(int i = 0 ; i< numeric.length; i++)
+    		numeric[i] = true;
+    	
+    	mapping = new HashMap<Integer, Integer>();
+    	orderToActualObjID = new HashMap<Integer, Integer>();
+    	
+    	
+    	for(int i = 0; i < parser.getData().size(); i++){
+    		
+    		int ID = Integer.valueOf(parser.getData().get(i).get(0));
+    		mapping.put(ID, i);///ID -> index on features
+    		orderToActualObjID.put(i, ID); //orderToActualObjID.put(entryNum, indentifier);//line number - comments - feature line -> ID (int)
+    		
+    		for(int j = 1; j < parser.getFeatureNames().size(); j++){
+    			
+    			features[i][j-1] = parser.getData().get(i).get(j);    	
+    			
                 try {
-                    for (int j = 0; j < this.features.length; j++) {
-                        Double.parseDouble(this.features[j][i]);
-                    }
-                } catch (NumberFormatException e) {
+                    Double.parseDouble(parser.getData().get(i).get(j));
+                }catch (NumberFormatException e) {
                     this.numeric[i] = false;
                 }
-            }
-            
-            localParseStatus.error_iDataFile = 0;
-        }
-        catch(FileNotFoundException ex)
-        {
-            return parsingObjectFileError("File not found "+objects.toString()+".");
+    		}
+    	}
+    	
+    	calculateMinNMaxForAllData();
+    	dataFilesValid.setValue(false);//Need a new order file
 
-        }
-        
-        
-        if((localParseStatus.error_iDataFile == 0)
-        &&(localParseStatus.error_orderDataFile == 0))
-        {
-            localParseStatus.overallParseResult = true;
-            this.isReady = true;
-            
-            calculateMinNMaxForAllData();
-        }
-        else
-        {
-            localParseStatus.overallParseResult = false;
-            this.isReady = false;
-        }
-        
-        return localParseStatus;
+    	return "Valid object file: "+  parser.getStatus().getDescription()+"\n"
+		+ "Number of samples: "+getNumberOfObjects()+"\n"
+		+ "Number of features: "+getNumberOfFeatures();
+    	
+
     }
     
-    public DataFileParseStatus parseOrderData()
-    {
-        Scanner scanner;
-        try
-        {
-            this.instnaces = new ArrayList<>();
-            this.atomicGroups = new ArrayList<>();
-            scanner = new Scanner(new BufferedReader(new FileReader(order)));
-            String platIndieLineSep = System.getProperty("line.separator");
-            int n = 0;
-            int group = 0;
-            
-            int srcFileLineNum = -1;
-            int entryNum = 0;
-            numOfPreferences = 0;
-            
-            while (scanner.hasNextLine()) {
+    public String setOrderData(DataParser parser){
+    	
+    	parsingOrderInformation = parser.getDetails();
+    	
+    	instances = new ArrayList<Preference>();
+    	atomicGroups = new ArrayList<Integer>();
+    	
+    	numOfPreferences = parser.getData().size();
+    	
+    	if((mapping==null)||(mapping.size()==0))
+    		return  "Load object file first.";
+    	
+    	if(parser.getData().size()==0){
+    		dataFilesValid.setValue(false);
+    		return "No orders in file.";
+    	}
+    	
 
-                srcFileLineNum++;
-                //System.out.println("Line number: "+(srcFileLineNum+1));
-               
-                
-                
-                String line = scanner.nextLine();
-                if (line.startsWith("%") || line.isEmpty()) {
-                    continue;
-                }
+    	
+    	for(int i = 0; i < parser.getData().size(); i++){
 
-                if (n++ < this.orderSkipLines) {
-                    continue;
-                }
-
-                
-                if(! line.contains(orderSeparator))
-                {
+    		
+        	if(parser.getData().get(i).size()<3){//at least ID + two objects
+        		dataFilesValid.setValue(false);
+        		return "Line "+i+" contains less than two objects.";
+        	}
+    		
+    		int ID = Integer.valueOf(parser.getData().get(i).get(0));
+    		
+    		int[] order = new int[parser.getData().get(i).size()-1];
+    		
+    		for(int j = 1; j < parser.getData().get(i).size(); j++){
+    			
+    			try {
+    				order[j-1] = Integer.valueOf(parser.getData().get(i).get(j));	            
+                }catch (NumberFormatException e) {
                 	
-                	scanner.close();
-                	return parsingOrderFileError("Entry "+entryNum+" at line "+srcFileLineNum+""+platIndieLineSep+" is not split with chosen separator");
-
+                   dataFilesValid.setValue(false);
+                   return "Order file must contain ID integer values. Found \""+parser.getData().get(i).get(j)+"\" at line "+i;
                 }
-                else
-                {
-                    if(! mapping.isEmpty())
-                    { 
-                        String[] results = line.split(orderSeparator);
-                        String[] parsedList = Arrays.copyOfRange(results, this.orderSkipColumns, results.length);
-                        int[] list = new int[parsedList.length];
-
-                        for (int i = 0; i < parsedList.length; i++) {
-
-                            int parsedIdentifier = Integer.parseInt(parsedList[i]);
-
-                            if( ! mapping.containsKey(parsedIdentifier)){
-                            	scanner.close();
-                            	return parsingOrderFileError("Line "+srcFileLineNum+" refers to Object "+parsedIdentifier+""+platIndieLineSep+"which does not exist in the Object File");
-                            }
-
-                            list[i] = mapping.get(parsedIdentifier);
-                        }
-
-                        for (Preference p : Preference.listToPairWisePreference(list)) {
-                            instnaces.add(p);
-                            atomicGroups.add(group);
-                        }
-                    }
-
-                    numOfPreferences++;
-                    
-                    group++;
-
-                    entryNum++;
-                }
+    			
+    			if(!mapping.containsKey(order[j-1])){
+    				dataFilesValid.setValue(false);
+    				return "Object with ID "+order[j-1]+" not found on object file. Line "+i;
+    			}
+    			
+    		}
+    		
+    		for (Preference p : Preference.listToPairWisePreference(order)) {
+                instances.add(p);
+                atomicGroups.add(ID);//group ID
             }
-            scanner.close();
-            
-            localParseStatus.error_orderDataFile = 0;
-        } 
-        catch (FileNotFoundException ex) 
-        {
-        	
-        	return parsingOrderFileError("File not found: "+order.toString()+".");
+    		
+    	}
+    	
+    	dataFilesValid.setValue(true);
+    	
+    	return  "Valid order file: "+parser.getStatus().getDescription()+"\n"
+    			+ "Number of pairwise preferences: "+getNumberOfPreferences();
 
-        }
-        
-        
-        if((localParseStatus.error_iDataFile == 0)
-        &&(localParseStatus.error_orderDataFile == 0))
-        {
-            localParseStatus.overallParseResult = true;
-            this.isReady = true;
-            
-            calculateMinNMaxForAllData();
-        }
-        else
-        {
-            localParseStatus.overallParseResult = false;
-            this.isReady = false;
-        }
-        
-        return localParseStatus;
+    }
+    
+    public String setSingleFile(DataParser parser) {
+    	
+    	parsingObjectsInformation = parser.getDetails();
+    	parsingOrderInformation = "";
+    	
+    	features = new String[parser.getData().size()][parser.getFeatureNames().size()-2];//ID and ratings are removed
+    	numeric = new boolean[parser.getFeatureNames().size()-2];
+    	instances = new ArrayList<Preference>();
+    	atomicGroups = new ArrayList<Integer>();
+    	
+    	double[] ratings = new double[parser.getData().size()];
+    	
+    	for(int i = 0 ; i< numeric.length; i++)
+    		numeric[i] = true;
+    	
+    	mapping = new HashMap<Integer, Integer>();
+    	orderToActualObjID = new HashMap<Integer, Integer>();
+    	
+    	
+    	for(int i = 0; i < parser.getData().size(); i++){
+    		
+    		int ID = Integer.valueOf(parser.getData().get(i).get(0));
+    		mapping.put(ID, i);///ID -> index on features
+    		orderToActualObjID.put(i, ID); //orderToActualObjID.put(entryNum, indentifier);//line number - comments - feature line -> ID (int)
+    		
+    		for(int j = 1; j < parser.getFeatureNames().size()-1; j++){
+    			
+    			features[i][j-1] = parser.getData().get(i).get(j);    	
+    			
+                try {
+                    Double.parseDouble(parser.getData().get(i).get(j));
+                }catch (NumberFormatException e) {
+                    this.numeric[i] = false;
+                }
+    		}
+    		
+            try {
+                ratings[i] = Double.parseDouble(parser.getData().get(i).get(parser.getFeatureNames().size()-1));
+            }catch (NumberFormatException e) {
+            	dataFilesValid.setValue(false);
+                return "Found non numerical rating ("+parser.getData().get(i).get(parser.getFeatureNames().size()-1)+")in line "+i;
+            }
+    	}
+    	
+    	for(int i=0;i<ratings.length-1;i++){
+    		
+    		for(int j=i+1;j<ratings.length;j++){
+    			
+    			if(ratings[i]>ratings[j]){
+    				instances.add(new Preference(i,j));
+    				atomicGroups.add( orderToActualObjID.get(i));
+    			}
+    			else if(ratings[i]<ratings[j]){
+    				instances.add(new Preference(j,i));
+    				atomicGroups.add( orderToActualObjID.get(i));
+    			}
+    			
+    		}
+    	}
+    	
+    	numOfPreferences = ratings.length;
+    	
+    	
+    	calculateMinNMaxForAllData();
+    	
+    	dataFilesValid.setValue(true);
+
+    	
+    	return "Valid object file: "+  parser.getStatus().getDescription()+"\n"
+		+ "Number of samples: "+getNumberOfObjects()+"\n"
+		+ "Number of features: "+getNumberOfFeatures()+"\n"
+		+ "Number of pairwise preferences: "+getNumberOfPreferences();
+    	
+    	// TODO Auto-generated method stub
+    	
     }
     
     public int getObjActualID(int para_objOrderID) {
@@ -561,37 +451,24 @@ public class ObjectsOrderFormat implements DataSet {
     
     @Override
     public int getNumberOfObjects() {
-        if (!this.containsIData()) {
-            throw new IllegalStateException("parse() has not been called");
-        }
+
         return features.length;
     }
 
     @Override
     public int getNumberOfPreferences() {
-        if (!this.containsOrderData()) {
-            throw new IllegalStateException("parse() has not been called");
-        }
 
-        //return instnaces.size();
         return numOfPreferences;
     }
 
     @Override
     public int getNumberOfFeatures() {
-        if (!this.containsIData()) {
-            throw new IllegalStateException("parse() has not been called");
-        }
 
         return features[0].length;
     }
 
     @Override
     public String getFeatureName(int n) {
-        if (!this.isReady) {
-            throw new IllegalStateException("parse() has not been called");
-        }
-
 
         if (n >= this.getNumberOfFeatures() || n < 0) {
             throw new IllegalArgumentException();
@@ -608,10 +485,6 @@ public class ObjectsOrderFormat implements DataSet {
 
     @Override
     public String[] getFeatures(int n) {
-        if (!this.isReady) {
-            throw new IllegalStateException("parse() has not been called");
-        }
-
 
         if (n >= this.getNumberOfObjects() || n < 0) {
             throw new IllegalArgumentException();
@@ -622,10 +495,6 @@ public class ObjectsOrderFormat implements DataSet {
 
     @Override
     public String getFeature(int n, int f) {
-        if (!this.isReady) {
-            throw new IllegalStateException("parse() has not been called");
-        }
-
 
         if (n >= this.getNumberOfObjects() || n < 0) {
             throw new IllegalArgumentException();
@@ -640,15 +509,11 @@ public class ObjectsOrderFormat implements DataSet {
 
     @Override
     public Preference getPreference(int n) {
-        if (!this.isReady) {
-            throw new IllegalStateException("parse() has not been called");
-        }
-
 
         if (n >= this.getNumberOfPreferences() || n < 0) {
             throw new IllegalArgumentException();
         }
-        return this.instnaces.get(n);
+        return this.instances.get(n);
     }
 
     @Override
@@ -662,7 +527,7 @@ public class ObjectsOrderFormat implements DataSet {
     }
 
     public String toString() {
-        return "{SushiFormatDataSet - Data set: " + super.toString() + "}";
+        return "{Dataset: " + super.toString() + "}";
     }
     
     private void calculateMinNMaxForAllData()

@@ -205,7 +205,7 @@ public abstract class ModelFileData implements Serializable
                 if(! igArr[i])
                 {
                     tmpFIDList.add(i);
-                    tmpFNameList.add(para_exp.dataSetProperty().get().getFeatureName(i));
+                    tmpFNameList.add(para_exp.getDataset().getFeatureName(i));
                 }
             }
             
@@ -223,7 +223,7 @@ public abstract class ModelFileData implements Serializable
             featureNames = new String[selF_ids.length];
             for(int i=0; i<selF_ids.length; i++)
             {
-                featureNames[i] = para_exp.dataSetProperty().get().getFeatureName(selF_ids[i]);
+                featureNames[i] = para_exp.getDataset().getFeatureName(selF_ids[i]);
             }
           
         }

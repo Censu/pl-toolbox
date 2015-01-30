@@ -8,9 +8,8 @@
 
 
 
-
 .root{
-
+	
     -fx-mygradient: linear-gradient(
         to bottom,
         ladder(red, 
@@ -95,6 +94,84 @@
 
 
 
+
+
+.datasetTabVBox{
+	-fx-alignment: top-left;
+	/*-fx-border-radius:50;*/
+	/*-fx-border-color:red;*/
+	-fx-padding:20;
+	-fx-spacing:20;
+}
+
+.datasetTabGrid{
+	/*fx-grid-lines-visible:true;*/
+	-fx-hgap:20;
+	-fx-vgap:30;
+	-fx-padding:0;
+}
+
+.datasetTabButtonBox{
+	-fx-alignment: center;
+	-fx-border-radius:5;
+	-fx-border-color:gray;
+	-fx-padding:10;
+	-fx-spacing:15;
+}
+
+.datasetTabButton{
+	
+}
+
+
+.datasetTabStatusBox{
+	-fx-alignment: top-left;
+	-fx-border-radius:3;
+	-fx-border-color:gray;
+	-fx-padding:5;
+	-fx-fill-height:true;
+	/*
+	-fx-font-size: 12;
+    -fx-font-family: "Helvetica-neue";	
+    -fx-font-weight: bold;
+  	*/
+}
+
+.parsePopUpGrid{
+	-fx-hgap:10;
+	-fx-vgap:12;
+	-fx-padding:20;
+	-fx-alignment:top-left;
+}
+
+
+
+.datasetImage {
+	
+	-fx-image: url("./dataset_empty.png");
+}
+
+
+
+.popUpHBox{
+	
+	-fx-background-color: #336699; 
+    -fx-background-insets: 12; 
+  	-fx-background-radius: 6;
+    -fx-padding: 20;
+    -fx-spacing: 10;
+    -fx-alignment:center;
+	
+}
+
+.popUpBorderPane{
+	
+	-fx-effect: dropshadow(three-pass-box, derive(cadetblue, -20%), 10, 0, 4, 4);
+    -fx-background-color: white;
+    -fx-background-insets: 12; 
+    -fx-background-radius: 6;
+	
+}
 
 
 

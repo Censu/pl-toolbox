@@ -241,7 +241,9 @@ public class ResultViewer {
          
          VBox innerPaneDatasetUsed = new VBox();
          innerPaneDatasetUsed.setPadding(new Insets(20,10,10,10));
-         GridPane gPaneDatasetUsed = new GridPane();
+         
+         
+         /*  GridPane gPaneDatasetUsed = new GridPane();
          gPaneDatasetUsed.setHgap(20);
          gPaneDatasetUsed.setVgap(5);
          Label lblObjFileName = new Label("Object File Name:");
@@ -249,14 +251,19 @@ public class ResultViewer {
          Label lblRankFileName = new Label("Rank File Name:");
          Label lblRankFilePath = new Label("Rank File Path:");
          gPaneDatasetUsed.add(lblObjFileName, 0, 0);
-         gPaneDatasetUsed.add(new Label(""+experiment.idataProperty().get().getName()), 1, 0);
+         
+         gPaneDatasetUsed.add(, 1, 0);
+         
          gPaneDatasetUsed.add(lblRankFileName, 0, 1);
-         gPaneDatasetUsed.add(new Label(adjustPathStrSpacing(""+experiment.orderProperty().get().getName(),maxPathStrWidth)), 1, 1);
+         
+        gPaneDatasetUsed.add(new Label(adjustPathStrSpacing(""+experiment.orderProperty().get().getName(),maxPathStrWidth)), 1, 1);
          gPaneDatasetUsed.add(lblObjFilePath, 0, 2);
          gPaneDatasetUsed.add(new Label(adjustPathStrSpacing(""+experiment.idataProperty().get().getAbsolutePath(),maxPathStrWidth)), 1, 2);
          gPaneDatasetUsed.add(lblRankFilePath, 0, 3);
          gPaneDatasetUsed.add(new Label(adjustPathStrSpacing(""+experiment.orderProperty().get().getAbsolutePath(),maxPathStrWidth)), 1, 3);
-         innerPaneDatasetUsed.getChildren().add(gPaneDatasetUsed);
+         
+         innerPaneDatasetUsed.getChildren().add(gPaneDatasetUsed);*/
+         innerPaneDatasetUsed.getChildren().add(new Label(experiment.getDataset().getParsingDetails()));
          
          
          bpDatasetUsed.setCenter(innerPaneDatasetUsed);
@@ -282,7 +289,7 @@ public class ResultViewer {
              PreprocessingOperation tmpPreProOp = preProOps[i];
              if(! (tmpPreProOp instanceof Ignoring))
              {
-                 Label lblFeatureName = new Label(experiment.dataSetProperty().get().getFeatureName(tmpPreProOp.getFeature()));
+                 Label lblFeatureName = new Label(experiment.getDataset().getFeatureName(tmpPreProOp.getFeature()));
                  Label lblPreProOp = new Label(tmpPreProOp.getOperationName());
                  
                  gPaneFeaturesIncluded.add(lblFeatureName, 0, currRow);
@@ -345,7 +352,7 @@ public class ResultViewer {
             int[] selFeatures = experiment.featureSelectionProperty().get().getResult().getSelectedFeatures();
             for(int i=0; i<selFeatures.length; i++)
             {
-                String tmpFName = experiment.dataSetProperty().get().getFeatureName(i);
+                String tmpFName = experiment.getDataset().getFeatureName(i);
                 gPaneSelections.add(new Label(tmpFName), 0, i);
             }
             
